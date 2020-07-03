@@ -33,8 +33,27 @@ public class InputManager : MonoBehaviour
         //InputFieldからテキスト情報を取得する
         string inputted = inputField.text;
 
-        //ログに入力内容を表示する
+        //TODO:入力内容のエラーチェック
+
+        //TODO:/コマンドの実装
+
+
+        //DEBUG:サーバーと通信をせずに表示
         GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
+
+        /*
+        //サーバーに入力内容を送信
+        if (GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted) == 0)
+        {
+            //ログに入力内容を表示する
+            GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
+        }
+        else
+        {
+            //ログにエラーを表示する
+            GameObject.Find("Text_Log").GetComponent<Log>().AddLog("送信に失敗しました");
+        }
+        */
 
         //入力フォームのテキストを空にする
         inputField.text = "";
