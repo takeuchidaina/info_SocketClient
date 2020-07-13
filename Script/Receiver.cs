@@ -28,11 +28,9 @@ public class Receiver : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //gm = GetComponent<GameManager>();
         ipAdd = System.Net.IPAddress.Parse(ipString);
         listener = new System.Net.Sockets.TcpListener(ipAdd, port);
         listener.Start();
-        //StartCoroutine("ConnectWait");
         receiver = new Thread(new ThreadStart(ConnectWait));
         receiver.Start();
     }
@@ -45,53 +43,44 @@ public class Receiver : MonoBehaviour
         {
             return;
         }
+
         //データの一部を受信する
         resSize = ns.Read(resBytes, 0, resBytes.Length);
 
         if (resSize == 0)
         {
             disconnected = true;
-            Debug.Log("<color=red>クライアントが切断しました。</color>");
             resBytes[0] = 0;
         }
-        //else if (ns.DataAvailable || resBytes[resSize - 1] != '\n')
-        {
-            if (resBytes[0] == 0 || resBytes[0] == '\n')
-            {
-                disconnected = true;
-            }
-            else if (resBytes[0] == '/')
-            {
-                ms.Write(resBytes, 0, resSize);
-                string resMsg = enc.GetString(ms.GetBuffer(), 0, (int)ms.Length);
-                resBytes[0] = 0;
 
-                Debug.Log(resMsg);
-            }
-            else
+        if (resBytes[0] == 0 || resBytes[0] == '\n')
+        {
+            disconnected = true;
+        }
+        else if (resBytes[0] == '/')
+        {
+            ms.Write(resBytes, 0, resSize);
+            string resMsg = enc.GetString(ms.GetBuffer(), 0, (int)ms.Length);
+            resBytes[0] = 0;
+        }
+        else
+        {
+            //受信したデータを蓄積する
+            ms.Write(resBytes, 0, resSize);
+            //受信したデータを文字列に変換
+            string resMsg = enc.GetString(ms.GetBuffer(), 0, (int)ms.Length);
+            //ログに入力内容を表示する
+            GameObject.Find("Text_Log").GetComponent<Log>().AddLog(resMsg);
+            while (true)
             {
-                //受信したデータを蓄積する
-                ms.Write(resBytes, 0, resSize);
-                Debug.Log("ちくせきいいいいいいいい:" + resSize + ":" + resBytes[0]);
-                //まだ読み取れるデータがあるか、データの最後が\nでない時は、
-                // 受信を続ける
-                //受信したデータを文字列に変換
-                string resMsg = enc.GetString(ms.GetBuffer(), 0, (int)ms.Length);
-                Debug.Log("返ってきた：" + resMsg);
-                //ログに入力内容を表示する
-                GameObject.Find("Text_Log").GetComponent<Log>().AddLog(resMsg);
-                while (true)
-                {
-                    resMsg = resMsg.TrimEnd('\n');
-                    Debug.Log("君の気持ち、受け取った！：" + resMsg);
-                    resBytes[0] = 0;
-                    break;
-                }
+                resMsg = resMsg.TrimEnd('\n');
+                resBytes[0] = 0;
+                break;
             }
         }
 
 
-        if (disconnected)
+        if (disconnected == true)
         {
             DisConnect();
         }
@@ -103,13 +92,10 @@ public class Receiver : MonoBehaviour
         ns.Close();
         client.Close();
         client.Dispose();
-        Debug.Log("<color=red>クライアントとの接続を閉じました。</color>");
 
         listener.Stop();
-        Debug.Log("<color=red>Listenerを閉じました。</color>");
         isConenct = false;
-        //Console.ReadLine();
-        //receiver.Start();
+
         receiver.Abort();
         receiver = new Thread(new ThreadStart(ConnectWait));
         receiver.Start();
@@ -117,22 +103,13 @@ public class Receiver : MonoBehaviour
 
     void ConnectWait()
     {
-        //while(true)
-        {
-            //if (isConenct == true){continue;}
-            listener.Start();
-            Debug.Log("<color=red>Listenを開始しました({0}:{1})</color>");
-            client = listener.AcceptTcpClient();
-            Debug.Log("<color=red>クライアント({0}:{1})と接続しました</color>");
-            ns = client.GetStream();
-            //ns.ReadTimeout = 10000;
-            //ns.WriteTimeout = 10000;
-            enc = System.Text.Encoding.UTF8;
-            ms = new System.IO.MemoryStream();
-            isConenct = true;
-            //StopCoroutine("ConnectWait");
-            //return null;
-        }
-
+        listener.Start();
+        client = listener.AcceptTcpClient();
+        ns = client.GetStream();
+        ns.ReadTimeout = 1000;
+        ns.WriteTimeout = 1000;
+        enc = System.Text.Encoding.UTF8;
+        ms = new System.IO.MemoryStream();
+        isConenct = true;
     }
 }

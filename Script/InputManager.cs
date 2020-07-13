@@ -34,7 +34,7 @@ public class InputManager : MonoBehaviour
         string inputted = inputField.text;
 
         //入力内容のチェック
-        if (CheckTheInput(inputted) == false)
+        if (InputCheck(inputted) == false)
         {
             return 0;
         }
@@ -70,12 +70,12 @@ public class InputManager : MonoBehaviour
         return 0;
     }
 
-    private bool CheckTheInput(string _msg)
+    private bool InputCheck(string _input)
     {
         /*必ずif文が通った際にreturnでfalseが返せるようにする*/
 
         //文字数を確認　0文字ならfalse
-        if (_msg == "") { return false; }
+        if (_input == "") { return false; }
         //説明
         //else if(){return false;}
 
