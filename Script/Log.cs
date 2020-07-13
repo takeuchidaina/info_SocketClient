@@ -29,6 +29,6 @@ public class Log : MonoBehaviour
     //タイムスタンプの文字列を返す
     private string TimeStamp()
     {
-        return "[" + DateTime.Now.ToLongTimeString() + "]　";
+        return "[" + DateTime.Now.ToLongTimeString() + "] ";
     }
 }

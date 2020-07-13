@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         //エンターキーが押されたら内容を送信する
-        if (Input.GetKeyDown(KeyCode.Return) && inputField.text != "")
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             GetInput();
         }
@@ -28,18 +28,24 @@ public class InputManager : MonoBehaviour
     //入力された内容を読み取ってコンソールに出力する関数
     //inspector上のOnEndEditにて選択
     //Enterが押されると呼ばれる
-    public void GetInput()
+    public int GetInput()
     {
         //InputFieldからテキスト情報を取得する
         string inputted = inputField.text;
 
-        //TODO:入力内容のエラーチェック
+        //入力内容のチェック
+        if (CheckTheInput(inputted) == false)
+        {
+            return 0;
+        }
 
         //TODO:/コマンドの実装
 
 
-        //DEBUG:サーバーと通信をせずに表示
+        //ログに入力内容を表示する
         GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
+        //サーバーに送信
+        GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted);
 
         /*
         //サーバーに入力内容を送信
@@ -60,7 +66,20 @@ public class InputManager : MonoBehaviour
 
         //入力待機状態にする
         inputField.Select();
+
+        return 0;
     }
 
+    private bool CheckTheInput(string _msg)
+    {
+        /*必ずif文が通った際にreturnでfalseが返せるようにする*/
+
+        //文字数を確認　0文字ならfalse
+        if (_msg == "") { return false; }
+        //説明
+        //else if(){return false;}
+
+        return true;
+    }
 
 }
