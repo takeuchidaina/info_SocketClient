@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;//UIのInputFiledを使用するので追加しないとダメ
-public class InPut : MonoBehaviour
+public class InputIP : MonoBehaviour
 {
     private string ip;
     private string listName;
