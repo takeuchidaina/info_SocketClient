@@ -5,17 +5,27 @@ using UnityEngine.UI;
 
 public class ServerRoomNode : MonoBehaviour
 {
-    private string serverName = "20.00.10.24";
+    private ServerRoom serverRoom;  //サーバールーム情報を格納する変数
 
-    public string ServerName
+    //サーバールーム情報を格納する変数のプロパティ
+    public ServerRoom ServerRoom
     {
-        get { return this.serverName; }
-        set { this.serverName = value; }
+        get { return this.serverRoom; }
+        set { this.serverRoom = value; }
     }
 
     private void Start()
     {
+        //表示する名前を変更
         Text nameText = this.GetComponentInChildren<Text>();
-        nameText.text = serverName;
+        nameText.text = serverRoom.ServerRoomName;
+    }
+
+    //サーバーリスト選択処理
+    public void Push_Botton()
+    {
+        //サーバーリストクラスへサーバールーム情報を送る
+        GameObject serverList = GameObject.Find("ServerList");
+        serverList.GetComponent<ServerList>().SelectServerRoom(serverRoom);
     }
 }
