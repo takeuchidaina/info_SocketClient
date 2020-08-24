@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;//シーン判別に使う
 using UnityEngine;
 using UnityEngine.UI;//UIのInputFiledを使用するので追加しないとダメ
 public class InputIP : MonoBehaviour
@@ -23,60 +22,33 @@ public class InputIP : MonoBehaviour
 
     void Update()
     {
-        if (SceneManager.GetActiveScene().name == "DirectSendScene")
-        {   //ダイレクト接続シーンでのみやりたい処理
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Return) && IP.text != "")
-            {
-                EndInput();
-            }
-        }
-        else
+        //どちらも入力されていて
+        //エンターキーが押されたら内容を送信する
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Return) &&
+            IP.text != "" && Name.text != "")
         {
-            //どちらも入力されていて
-            //エンターキーが押されたら内容を送信する
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Return) &&
-                IP.text != "" && Name.text != "")
-            {
-                EndInput();
-            }
+            EndInput();
         }
     }
 
     public void EndInput()//入力終了
     {
-        if (SceneManager.GetActiveScene().name == "DirectSendScene")
-        {   //ダイレクト接続シーンでのみやりたい処理
-
-            if (IP.text != "")
-            {
-                ip = IP.text;
-
-                //入力したテキストを表示
-                Debug.Log("ダイレクト接続");
-                Debug.Log("サーバーIP:" + ip);
-
-                //入力し終わったらテキストを消す
-                IP.text = "";
-            }
-        }
-        else
+        if (IP.text != "" && Name.text != "")
         {
-            if (IP.text != "" && Name.text != "")
-            {
-                ip = IP.text;
-                name = Name.text;
-
-                //入力したテキストを表示
-                Debug.Log("接続");
-                Debug.Log("サーバー名:" + name);
-                Debug.Log("サーバーIP:" + ip);
-
-                //入力し終わったらテキストを消す
-                IP.text = "";
-                Name.text = "";
-            }
+            ip = IP.text;
+            name = Name.text;
         }
+
+        //入力したテキストを表示
+        Debug.Log("IP:" + ip);
+        //入力したテキストを表示
+        Debug.Log("Name:" + name);
+        //入力されてのを送信する処理
+
+        //入力し終わったらテキストを消す
+        IP.text = "";
+        Name.text = "";
     }
+
 }
 
