@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;//UIのInputFiledを使用するので追加しないとダメ
 
-public class Input : MonoBehaviour
+public class InPut : MonoBehaviour
 {
     private static string input;//入力されたinPutを読み込む
 
