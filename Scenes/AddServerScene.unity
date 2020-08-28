@@ -1116,8 +1116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d8ae5b70932564d9a83eb1d9f3f471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FixInputField: {fileID: 0}
-  inputText: {fileID: 0}
+  FixInputField: {fileID: 1216035698}
+  inputText: {fileID: 287500047}
   previousText: 
 --- !u!1 &1574018121
 GameObject:
@@ -1468,7 +1468,6 @@ GameObject:
   - component: {fileID: 1842446492}
   - component: {fileID: 1842446490}
   - component: {fileID: 1842446494}
-  - component: {fileID: 1842446495}
   m_Layer: 5
   m_Name: Name_InputField
   m_TagString: Untagged
@@ -1608,21 +1607,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d8ae5b70932564d9a83eb1d9f3f471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FixInputField: {fileID: 0}
-  inputText: {fileID: 0}
+  FixInputField: {fileID: 1842446490}
+  inputText: {fileID: 256711761}
   previousText: 
---- !u!114 &1842446495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1842446489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9341ada6c980384a946d8bea25a70d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1953999042
 GameObject:
   m_ObjectHideFlags: 0

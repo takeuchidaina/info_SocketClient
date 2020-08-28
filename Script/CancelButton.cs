@@ -19,7 +19,7 @@ public class CancelButton : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(cancelFlg);
+      //  Debug.Log(cancelFlg);
     }
 
 }
