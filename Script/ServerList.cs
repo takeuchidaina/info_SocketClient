@@ -97,6 +97,17 @@ public class ServerList : MonoBehaviour
         }
     }
 
+    //毎フレーム呼ばれる処理
+    private void Update()
+    {
+        if(GameManager.ClientState == eClient.Add  && GameManager.IsChangeScene == false)
+        {
+            AddServerList(SendButton.Get_Name(), SendButton.Get_IP());
+            GameManager.ClientState = eClient.None;
+            Debug.Log(GameManager.ClientState);
+        }
+    }
+
     //オブジェクトが破棄される際に呼ばれる処理
     private void OnDestroy()
     {
@@ -111,14 +122,14 @@ public class ServerList : MonoBehaviour
     }
 
     //サーバーリストにサーバールームを新規追加する処理
-    public void AddServerList()
+    public void AddServerList(string _name, string _IP)
     {
         //サーバーリストにサーバールームを新規追加
-        serverRoomList.Add(new ServerRoom("新規", "00.00.00.00"));
+        serverRoomList.Add(new ServerRoom(_name, _IP));
 
         //サーバールームをオブジェクトとして生成
         GameObject node = Instantiate(serverRoomPrefab, content.transform) as GameObject;
-        node.name = serverRoomList[serverRoomList.Count - 1].ServerRoomName + 
+        node.name = serverRoomList[serverRoomList.Count - 1].ServerRoomName +
             serverRoomList[serverRoomList.Count - 1].ServerRoomIdentNum;
         ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
         serverRoomNode.ServerRoom = serverRoomList[serverRoomList.Count - 1];
