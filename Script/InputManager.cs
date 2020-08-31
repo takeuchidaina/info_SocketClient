@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
 
     //入力された内容を読み取ってコンソールに出力する関数
     //inspector上のOnEndEditにて選択
-    //Enterが押されると呼ばれる
+    //Enterが押されるまたは送信ボタンを押すと呼ばれる
     public int GetInput()
     {
         //InputFieldからテキスト情報を取得する
@@ -39,30 +39,27 @@ public class InputManager : MonoBehaviour
             return 0;
         }
 
-        //TODO:/コマンドの実装
-
-
         //ログに入力内容を表示する
-        GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
+        //GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
         //サーバーに送信
-        GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted);
+        //GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted);
 
-        /*
+        
         //サーバーに入力内容を送信
+        //送信成功
         if (GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted) == 0)
         {
             //ログに入力内容を表示する
             GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
+            //入力フォームのテキストを空にする
+            inputField.text = "";
         }
+        //送信失敗
         else
         {
             //ログにエラーを表示する
             GameObject.Find("Text_Log").GetComponent<Log>().AddLog("送信に失敗しました");
         }
-        */
-
-        //入力フォームのテキストを空にする
-        inputField.text = "";
 
         //入力待機状態にする
         inputField.Select();
