@@ -20,7 +20,7 @@ public class ServerConnect : MonoBehaviour
 
     public int SendServer(string _sendMsg)
     {
-        string ipOrHost = SendButton.Get_IP();
+        string ipOrHost = SendButton.Get_IP;
         //string ipOrHost = "192.168.11.21";
         int port = 2001;
 

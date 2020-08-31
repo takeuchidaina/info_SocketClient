@@ -10,9 +10,9 @@ public class InPut : MonoBehaviour
     public InputField inPut;
 
     //ゲッター
-    public static string Get_Input()
+    public static string Get_Input
     {
-        return input;
+        get { return input; }
     }
 
     void Update()

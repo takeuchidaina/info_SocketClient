@@ -12,14 +12,14 @@ public class SendButton : MonoBehaviour
     public InputField Name;
 
     //ゲッター
-    public static string Get_IP()
+    public static string Get_IP
     {
-        return ip;
+        get { return ip; }
     }
 
-    public static string Get_Name()
+    public static string Get_Name
     {
-        return listName;
+        get { return listName; }
     }
 
     public void Send()

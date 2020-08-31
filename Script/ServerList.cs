@@ -102,7 +102,7 @@ public class ServerList : MonoBehaviour
     {
         if(GameManager.ClientState == eClient.Add  && GameManager.IsChangeScene == false)
         {
-            AddServerList(SendButton.Get_Name(), SendButton.Get_IP());
+            AddServerList(SendButton.Get_Name, SendButton.Get_IP);
             GameManager.ClientState = eClient.None;
             Debug.Log(GameManager.ClientState);
         }

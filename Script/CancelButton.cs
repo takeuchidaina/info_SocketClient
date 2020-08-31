@@ -6,15 +6,11 @@ public class CancelButton : MonoBehaviour
 {
     private static bool cancelFlg = false;
 
-    //ゲッター
-    public bool Get_CancelFlg()
+    //Cancelされたらリストを作らない
+    public static bool CancelFlg
     {
-        return cancelFlg;
-    }
-
-    public void Set_CancelFlg(bool _flg)
-    {
-        cancelFlg = _flg;
+        get { return cancelFlg; }
+        set { cancelFlg = value; }
     }
 
     void Update()
