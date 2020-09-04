@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class ApplicationInit : MonoBehaviour
 {
-    static void OnRuntimeMethodLoad()
-    {
-        Screen.SetResolution(720, 540, false,60);
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        
+        Screen.SetResolution(1080, 1920, false, 60);
     }
 
     // Update is called once per frame
