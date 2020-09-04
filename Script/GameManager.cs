@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
     public void Push_RemoveButton()
     {
         clientState = eClient.Remove;
-        isChangeScene = true;
     }
 
 }

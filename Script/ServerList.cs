@@ -11,9 +11,10 @@ using UnityEngine;
 
 public class ServerRoom
 {
-    private string serverRoomName;      //サーバーの名前
-    private string serverRoomIP;        //サーバーのIP
-    private string serverRoomIdentNum;  //サーバーの識別番号
+    private string serverRoomName;          //サーバーの名前
+    private string serverRoomIP;            //サーバーのIP
+    private string serverRoomIdentNum;      //サーバーの識別番号
+    private string serverRoomLastConnect;   //サーバーの最終接続日
 
     //サーバーの名前のゲッター
     public string ServerRoomName
@@ -33,6 +34,13 @@ public class ServerRoom
         get { return this.serverRoomIdentNum; }
     }
 
+    //サーバーの最終接続日のゲッター
+    public string ServerRoomLastConnect
+    {
+        get { return this.serverRoomLastConnect; }
+        set { this.serverRoomLastConnect = value; }
+    }
+
     //初期生成用のコンストラクタ
     public ServerRoom(string _name,string _IP)
     {
@@ -41,14 +49,16 @@ public class ServerRoom
         serverRoomName = _name;
         serverRoomIP = _IP;
         serverRoomIdentNum = dt.Year.ToString() + dt.Month.ToString() + dt.Day.ToString() + dt.Hour.ToString() + dt.Minute.ToString() + dt.Second.ToString() + dt.Millisecond.ToString();
+        serverRoomLastConnect = "NoData";
     }
 
     //ファイル読み込み用のコンストラクタ
-    public ServerRoom(string _name,string _IP,string _identNum)
+    public ServerRoom(string _name, string _IP, string _identNum, string _lastConnect)
     {
         serverRoomName = _name;
         serverRoomIP = _IP;
         serverRoomIdentNum = _identNum;
+        serverRoomLastConnect = _lastConnect;
     }
 }
 
@@ -61,6 +71,12 @@ public class ServerList : MonoBehaviour
 
     private string filePath;                    //ファイルパス
     private string fileName = "ServerList.txt"; //ファイル名
+
+    //選択されているサーバールームのゲッター
+    public ServerRoom SelectServer
+    {
+        get { return this.selectServerRoom; }
+    }
 
     //オブジェクト生成する際に行う処理
     private void Awake()
@@ -79,7 +95,7 @@ public class ServerList : MonoBehaviour
             {
                 string[] bufs = streamReader.ReadLine().Split(new char[] { ',', '\n' });
 
-                serverRoomList.Add(new ServerRoom(bufs[0], bufs[1], bufs[2]));
+                serverRoomList.Add(new ServerRoom(bufs[0], bufs[1], bufs[2], bufs[3]));
             }
         }
     }
@@ -100,11 +116,23 @@ public class ServerList : MonoBehaviour
     //毎フレーム呼ばれる処理
     private void Update()
     {
+        if (GameManager.ClientState == eClient.Connect)
+        {
+            GameManager.ClientState = eClient.None;
+
+            ConnectServerList();
+        }
+
         if(GameManager.ClientState == eClient.Add  && GameManager.IsChangeScene == false)
         {
-            AddServerList(SendButton.Get_Name, SendButton.Get_IP);
             GameManager.ClientState = eClient.None;
-            Debug.Log(GameManager.ClientState);
+
+            if (CancelButton.CancelFlg == true)
+            {
+                return;
+            }
+
+            AddServerList(SendButton.Get_Name, SendButton.Get_IP);
         }
     }
 
@@ -116,9 +144,17 @@ public class ServerList : MonoBehaviour
         {
             foreach (var serverRoom in serverRoomList)
             {
-                fileWrirer.WriteLine(serverRoom.ServerRoomName + "," + serverRoom.ServerRoomIP + "," + serverRoom.ServerRoomIdentNum);
+                fileWrirer.WriteLine(serverRoom.ServerRoomName + "," + serverRoom.ServerRoomIP + "," + serverRoom.ServerRoomIdentNum + "," + serverRoom.ServerRoomLastConnect);
             }
         }
+    }
+
+    public void ConnectServerList()
+    {
+        DateTime dt = DateTime.Now;
+
+        serverRoomList[serverRoomList.IndexOf(selectServerRoom)].ServerRoomLastConnect =
+            dt.Year.ToString()+" / "+dt.Month.ToString()+" / "+dt.Day.ToString()+" / "+dt.Hour.ToString()+" : "+ dt.Minute.ToString();
     }
 
     //サーバーリストにサーバールームを新規追加する処理
@@ -157,6 +193,14 @@ public class ServerList : MonoBehaviour
     //サーバールームの選択処理
     public void SelectServerRoom(ServerRoom _serverRoom)
     {
+        if(selectServerRoom != null)
+        {
+            GameObject node = GameObject.Find(selectServerRoom.ServerRoomName + selectServerRoom.ServerRoomIdentNum);
+            ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
+
+            serverRoomNode.IsSelect = false;
+        }
+
         selectServerRoom = _serverRoom;
     }
 }
