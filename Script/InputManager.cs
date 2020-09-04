@@ -28,43 +28,39 @@ public class InputManager : MonoBehaviour
     //入力された内容を読み取ってコンソールに出力する関数
     //inspector上のOnEndEditにて選択
     //Enterが押されるまたは送信ボタンを押すと呼ばれる
-    public int GetInput()
+    public void GetInput()
     {
         //InputFieldからテキスト情報を取得する
         string inputted = inputField.text;
 
         //入力内容のチェック
-        if (InputCheck(inputted) == false)
-        {
-            return 0;
-        }
-
-        //ログに入力内容を表示する
-        //GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
-        //サーバーに送信
-        //GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted);
-
-        
-        //サーバーに入力内容を送信
-        //送信成功
-        if (GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted) == 0)
+        if (InputCheck(inputted) == true)
         {
             //ログに入力内容を表示する
-            GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
-            //入力フォームのテキストを空にする
-            inputField.text = "";
-        }
-        //送信失敗
-        else
-        {
-            //ログにエラーを表示する
-            GameObject.Find("Text_Log").GetComponent<Log>().AddLog("送信に失敗しました");
-        }
+            //GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
+            //サーバーに送信
+            //GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted);
 
-        //入力待機状態にする
-        inputField.Select();
 
-        return 0;
+            //サーバーに入力内容を送信
+            //送信成功
+            if (GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted) == 0)
+            {
+                //ログに入力内容を表示する
+                GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
+                //入力フォームのテキストを空にする
+                inputField.text = "";
+            }
+            //送信失敗
+            else
+            {
+                //ログにエラーを表示する
+                GameObject.Find("Text_Log").GetComponent<Log>().AddLog("送信に失敗しました");
+            }
+
+            //入力待機状態にする
+            inputField.Select();
+        }
     }
 
     private bool InputCheck(string _input)
