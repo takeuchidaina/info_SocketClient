@@ -13,9 +13,21 @@ public class CancelButton : MonoBehaviour
         set { cancelFlg = value; }
     }
 
+    public void PushButton()
+    {
+        CancelFlg = true;
+    }
+
+
+    private void Awake()
+    {
+        cancelFlg = false;
+    }
+
+
     void Update()
     {
-      //  Debug.Log(cancelFlg);
+      Debug.Log(cancelFlg);
     }
 
 }
