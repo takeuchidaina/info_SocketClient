@@ -153,8 +153,13 @@ public class ServerList : MonoBehaviour
     {
         DateTime dt = DateTime.Now;
 
+        if(selectServerRoom == null)
+        {
+            return;
+        }
+
         serverRoomList[serverRoomList.IndexOf(selectServerRoom)].ServerRoomLastConnect =
-            dt.Year.ToString()+" / "+dt.Month.ToString()+" / "+dt.Day.ToString()+" / "+dt.Hour.ToString()+" : "+ dt.Minute.ToString();
+            dt.Year.ToString()+"/"+dt.Month.ToString()+"/"+dt.Day.ToString()+"/"+dt.Hour.ToString()+":"+ dt.Minute.ToString();
     }
 
     //サーバーリストにサーバールームを新規追加する処理
@@ -193,7 +198,8 @@ public class ServerList : MonoBehaviour
     //サーバールームの選択処理
     public void SelectServerRoom(ServerRoom _serverRoom)
     {
-        if(selectServerRoom != null)
+        //サーバールームが選択されてないとき
+        if (selectServerRoom != null && selectServerRoom != _serverRoom)
         {
             GameObject node = GameObject.Find(selectServerRoom.ServerRoomName + selectServerRoom.ServerRoomIdentNum);
             ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
