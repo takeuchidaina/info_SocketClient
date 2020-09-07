@@ -7,7 +7,6 @@ public class LoadScene : MonoBehaviour
 {
     //それぞれに対応するボタンが押されたら
     //それぞれのシーンに移動します
-
     //サーバーリスト追加シーンに移動
     public void AddServerButton()
     {
@@ -21,8 +20,15 @@ public class LoadScene : MonoBehaviour
     }
 
     //接続シーンに移動
+    //リストが選択されてないときは移動しない
     public void SendButton()
     {
+        GameObject serverListObj = GameObject.Find("ServerList");
+
+        ServerList serverList = serverListObj.GetComponent<ServerList>();
+
+        if (serverList.SelectServer == null) return;
+
         SceneManager.LoadScene("SendScene");
     }
 
