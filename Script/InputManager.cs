@@ -46,8 +46,6 @@ public class InputManager : MonoBehaviour
             //送信成功
             if (GameObject.Find("ServerConnect").GetComponent<ServerConnect>().SendServer(inputted) == 0)
             {
-                //ログに入力内容を表示する
-                GameObject.Find("Text_Log").GetComponent<Log>().AddLog(inputted);
                 //入力フォームのテキストを空にする
                 inputField.text = "";
             }
