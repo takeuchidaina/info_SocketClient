@@ -17,6 +17,16 @@ public class InPut : MonoBehaviour
 
     void Update()
     {
+        //対象のInputFieldが選択されている
+        if (inPut.GetComponent<InputField>().isFocused == true)
+        {
+            inPut.GetComponent<Image>().color = Color.green;
+        }
+        else
+        {
+            inPut.GetComponent<Image>().color = Color.white;
+        }
+
         if (UnityEngine.Input.GetKeyDown(KeyCode.Return) && inPut.text != "")
         {
             EndInput();
