@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+enum TextType
+{
+    Name,
+    IP,
+    LastConnect
+}
+
 public class ServerRoomNode : MonoBehaviour
 {
     private ServerRoom serverRoom;  //サーバールーム情報を格納する変数
@@ -29,18 +36,12 @@ public class ServerRoomNode : MonoBehaviour
 
     private void Start()
     {
-        //各テキストの変更処理
-        GameObject serverRoomName = GameObject.Find("ServerRoomName");
-        GameObject serverIP = GameObject.Find("ServerIP");
-        GameObject serverLastConnect = GameObject.Find("ServerLastConnect");
+        //テキスト名前をサーバーリストのものに変更
+        Text[] tests = this.GetComponentsInChildren<Text>();
 
-        Text nameText = serverRoomName.GetComponent<Text>();
-        Text IPText = serverIP.GetComponent<Text>();
-        Text lastConnectText = serverLastConnect.GetComponent<Text>();
-
-        nameText.text = serverRoom.ServerRoomName;
-        IPText.text = "IP : " + serverRoom.ServerRoomIP;
-        lastConnectText.text = "最終接続日 : " + serverRoom.ServerRoomLastConnect;
+        tests[(int)TextType.Name].text = serverRoom.ServerRoomName;
+        tests[(int)TextType.IP].text = "IP : " + serverRoom.ServerRoomIP;
+        tests[(int)TextType.LastConnect].text = "最終接続日 : " + serverRoom.ServerRoomLastConnect;
     }
 
     private void Update()
