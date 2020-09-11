@@ -67,15 +67,15 @@ public class ServerList : MonoBehaviour
     private GameObject content;                                         //サーバールームを格納する場所
     private GameObject serverRoomPrefab;                                //サーバールームObject
     private List<ServerRoom> serverRoomList = new List<ServerRoom>();   //サーバーリスト
-    private ServerRoom selectServerRoom = null;                         //選択されているサーバールーム
+    private static ServerRoom selectServerRoom = null;                         //選択されているサーバールーム
 
     private string filePath;                    //ファイルパス
     private string fileName = "ServerList.txt"; //ファイル名
 
     //選択されているサーバールームのゲッター
-    public ServerRoom SelectServer
+    public static ServerRoom SelectServer
     {
-        get { return this.selectServerRoom; }
+        get { return selectServerRoom; }
     }
 
     //オブジェクト生成する際に行う処理
