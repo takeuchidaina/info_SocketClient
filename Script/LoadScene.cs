@@ -23,11 +23,8 @@ public class LoadScene : MonoBehaviour
     //リストが選択されてないときは移動しない
     public void SendButton()
     {
-        GameObject serverListObj = GameObject.Find("ServerList");
-
-        ServerList serverList = serverListObj.GetComponent<ServerList>();
-
-        if (serverList.SelectServer == null) return;
+            
+        if (ServerList.SelectServer == null) return;
 
         SceneManager.LoadScene("SendScene");
     }
