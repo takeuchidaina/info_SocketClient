@@ -48,7 +48,9 @@ public class ServerRoom
 
         serverRoomName = _name;
         serverRoomIP = _IP;
-        serverRoomIdentNum = dt.Year.ToString() + dt.Month.ToString() + dt.Day.ToString() + dt.Hour.ToString() + dt.Minute.ToString() + dt.Second.ToString() + dt.Millisecond.ToString();
+        serverRoomIdentNum = dt.Year.ToString() + dt.Month.ToString() + dt.Day.ToString() +
+            dt.Hour.ToString() + dt.Minute.ToString() + dt.Second.ToString() +
+            dt.Millisecond.ToString();
         serverRoomLastConnect = "NoData";
     }
 
@@ -67,7 +69,7 @@ public class ServerList : MonoBehaviour
     private GameObject content;                                         //サーバールームを格納する場所
     private GameObject serverRoomPrefab;                                //サーバールームObject
     private List<ServerRoom> serverRoomList = new List<ServerRoom>();   //サーバーリスト
-    private static ServerRoom selectServerRoom = null;                         //選択されているサーバールーム
+    private static ServerRoom selectServerRoom = null;                  //選択されているサーバールーム
 
     private string filePath;                    //ファイルパス
     private string fileName = "ServerList.txt"; //ファイル名
@@ -116,6 +118,7 @@ public class ServerList : MonoBehaviour
     //毎フレーム呼ばれる処理
     private void Update()
     {
+        //ClientStateがConnectの場合
         if (GameManager.ClientState == eClient.Connect)
         {
             GameManager.ClientState = eClient.None;
@@ -123,10 +126,12 @@ public class ServerList : MonoBehaviour
             ConnectServerList();
         }
 
+        //ClientStateがAdd かつ シーンが切り替わってない場合
         if(GameManager.ClientState == eClient.Add  && GameManager.IsChangeScene == false)
         {
             GameManager.ClientState = eClient.None;
 
+            //キャンセルボタンが押されていた場合処理をおこなわない
             if (CancelButton.CancelFlg == true)
             {
                 return;
@@ -144,11 +149,14 @@ public class ServerList : MonoBehaviour
         {
             foreach (var serverRoom in serverRoomList)
             {
-                fileWrirer.WriteLine(serverRoom.ServerRoomName + "," + serverRoom.ServerRoomIP + "," + serverRoom.ServerRoomIdentNum + "," + serverRoom.ServerRoomLastConnect);
+                fileWrirer.WriteLine(serverRoom.ServerRoomName + "," + serverRoom.ServerRoomIP +
+                    "," + serverRoom.ServerRoomIdentNum +
+                    "," + serverRoom.ServerRoomLastConnect);
             }
         }
     }
 
+    //サーバールームに接続する際の処理
     public void ConnectServerList()
     {
         DateTime dt = DateTime.Now;
@@ -158,8 +166,10 @@ public class ServerList : MonoBehaviour
             return;
         }
 
+        //最終接続日を入力
         serverRoomList[serverRoomList.IndexOf(selectServerRoom)].ServerRoomLastConnect =
-            dt.Year.ToString()+"/"+dt.Month.ToString()+"/"+dt.Day.ToString()+"/"+dt.Hour.ToString()+":"+ dt.Minute.ToString();
+            dt.Year.ToString() + "/" + dt.Month.ToString() + "/" + dt.Day.ToString() + "/" +
+            dt.Hour.ToString() + ":" + dt.Minute.ToString();
     }
 
     //サーバーリストにサーバールームを新規追加する処理
@@ -189,7 +199,8 @@ public class ServerList : MonoBehaviour
         serverRoomList.RemoveAt(serverRoomList.IndexOf(selectServerRoom));
 
         //選択されたサーバールームのオブジェクトを削除する
-        Destroy(GameObject.Find(selectServerRoom.ServerRoomName + selectServerRoom.ServerRoomIdentNum));
+        Destroy(GameObject.Find(selectServerRoom.ServerRoomName +
+            selectServerRoom.ServerRoomIdentNum));
 
         //選択状態を解除する
         selectServerRoom = null;
@@ -201,7 +212,8 @@ public class ServerList : MonoBehaviour
         //サーバールームが選択されてないとき
         if (selectServerRoom != null && selectServerRoom != _serverRoom)
         {
-            GameObject node = GameObject.Find(selectServerRoom.ServerRoomName + selectServerRoom.ServerRoomIdentNum);
+            GameObject node = GameObject.Find(selectServerRoom.ServerRoomName +
+                selectServerRoom.ServerRoomIdentNum);
             ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
 
             serverRoomNode.IsSelect = false;
