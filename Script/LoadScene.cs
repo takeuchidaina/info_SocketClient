@@ -23,6 +23,10 @@ public class LoadScene : MonoBehaviour
     //リストが選択されてないときは移動しない
     public void SendButton()
     {
+        if (SceneManager.GetActiveScene().name == "SettingsChangeScene")
+        {
+            SceneManager.LoadScene("EditServerScene");
+        }
 
         if (SceneManager.GetActiveScene().name == "DirectSendScene")
         {
@@ -38,6 +42,20 @@ public class LoadScene : MonoBehaviour
     public void RemoteClient()
     {
         SceneManager.LoadScene("RemoteClient");
+    }
+
+    //サーバー編集シーンに移動
+    public void EditServer()
+    {
+        if (ServerList.SelectServer == null) return;
+
+        SceneManager.LoadScene("EditServerScene");
+    }
+
+    //設定変更シーンに移動
+    public void SettingsChange()
+    {
+        SceneManager.LoadScene("SettingsChangeScene");
     }
 
 }
