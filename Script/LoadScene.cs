@@ -23,10 +23,15 @@ public class LoadScene : MonoBehaviour
     //リストが選択されてないときは移動しない
     public void SendButton()
     {
-            
+
+        if (SceneManager.GetActiveScene().name == "DirectSendScene")
+        {
+            SceneManager.LoadScene("ManipulateScene");
+        }
+
         if (ServerList.SelectServer == null) return;
 
-        SceneManager.LoadScene("SendScene");
+        SceneManager.LoadScene("ManipulateScene");
     }
 
     //リモートクライアントシーンに移動

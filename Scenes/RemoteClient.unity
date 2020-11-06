@@ -4278,12 +4278,12 @@ PrefabInstance:
     - target: {fileID: 8986716939802880671, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8986716939802880671, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 274.99994
+      value: 602
       objectReference: {fileID: 0}
     - target: {fileID: 8986716939802880671, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
@@ -4298,22 +4298,22 @@ PrefabInstance:
     - target: {fileID: 8986716939802880671, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8986716939802880671, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8986716939802880671, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8986716939802880671, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8986716939802880671, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
@@ -4343,7 +4343,7 @@ PrefabInstance:
     - target: {fileID: 8986716938905696862, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8986716938905696862, guid: c86c045d38f02114fbc6f7321600985c,
         type: 3}
@@ -4354,6 +4354,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: BackDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986716938905696862, guid: c86c045d38f02114fbc6f7321600985c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 861941243}
+    - target: {fileID: 8986716938905696862, guid: c86c045d38f02114fbc6f7321600985c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: RemoveServerList
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986716938905696862, guid: c86c045d38f02114fbc6f7321600985c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c86c045d38f02114fbc6f7321600985c, type: 3}
