@@ -1,0 +1,20 @@
+{
+    "DefaultFixeduTalkEndTime": 1024.0,
+    "MaxTalkTime": 45.45,
+    "FacingTimeout": 364.364,
+    "AnnouncingTimeout": 8.1,
+    "WebCamID": 893,
+    "BufferCount": 931,
+    "BufferLength": 2.4,
+    "URL1": "A",
+    "URL2": "B",
+    "URL3": "C",
+    "NoisePath": "うらべひろかず",
+    "TSJapaneseTalker_VoiceFile": "ああああ",
+    "TSJapaneseTalker_DicPath": "ああああ",
+    "TSJapaneseTalker_UserDicFile": "ああああ",
+    "IsBannerManager": true,
+    "IsWeatherManager": true,
+    "IsInfraRedDetection": true,
+    "IsFaceRecognizer": true
+}
