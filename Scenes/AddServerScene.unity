@@ -530,6 +530,7 @@ GameObject:
   - component: {fileID: 297989530}
   - component: {fileID: 297989529}
   - component: {fileID: 297989532}
+  - component: {fileID: 297989534}
   - component: {fileID: 297989533}
   m_Layer: 5
   m_Name: SendButton
@@ -613,7 +614,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 297989533}
-        m_MethodName: RemoteClient
+        m_MethodName: CheckCcreateServer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -674,6 +675,18 @@ MonoBehaviour:
   IP: {fileID: 1216035698}
   Name: {fileID: 1842446490}
 --- !u!114 &297989533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297989527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58de13fb38caa44b064ee1795d19ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &297989534
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1074,7 +1087,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cb3f6d22846fc842a6d5a37b4e580f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inPut: {fileID: 1216035698}
 --- !u!1 &1574018121
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,7 +1673,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cb3f6d22846fc842a6d5a37b4e580f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inPut: {fileID: 1842446490}
 --- !u!1 &1953999042
 GameObject:
   m_ObjectHideFlags: 0
