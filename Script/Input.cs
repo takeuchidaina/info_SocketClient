@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;//UIのInputFiledを使用するので追加しないとダメ
+using UnityEngine.UI;
 
 public class InPut : MonoBehaviour
 {
