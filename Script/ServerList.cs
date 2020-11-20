@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /*****************************************************************************************************
 
@@ -66,9 +67,9 @@ public class ServerRoom
 
 public class ServerList : MonoBehaviour
 {
-    private GameObject content;                                         //サーバールームを格納する場所
-    private GameObject serverRoomPrefab;                                //サーバールームObject
-    private List<ServerRoom> serverRoomList = new List<ServerRoom>();   //サーバーリスト
+    private GameObject content;     //サーバールームを格納する場所
+    private GameObject serverRoomPrefab;    //サーバールームObject
+    private List<ServerRoom> serverRoomList = new List<ServerRoom>();    //サーバーリスト
     private static ServerRoom selectServerRoom = null;
     public const int SERVER_NUM = 5;        //サーバーの数//選択されているサーバールーム
     private static int nowServerNum = 0;    //現在のサーバーの数
@@ -124,6 +125,8 @@ public class ServerList : MonoBehaviour
             ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
             serverRoomNode.ServerRoom = serverRoom;
         }
+
+        SceneManager.sceneLoaded += SceneLoaded;
     }
 
     //毎フレーム呼ばれる処理
@@ -150,11 +153,14 @@ public class ServerList : MonoBehaviour
 
             AddServerList(SendButton.Get_Name, SendButton.Get_IP);
         }
+
+        Debug.Log("IsCreate : "+AddControl.IsCreate);
     }
 
     //オブジェクトが破棄される際に呼ばれる処理
     private void OnDestroy()
     {
+
         //ファイル書き込み(現在テキストファイルでcsvみたいな方法で管理している)
         using (StreamWriter fileWrirer = new StreamWriter(filePath, false))
         {
@@ -186,8 +192,8 @@ public class ServerList : MonoBehaviour
     //サーバーリストにサーバールームを新規追加する処理
     public void AddServerList(string _name, string _IP)
     {
-        //サーバーの数が5つ以上になる場合追加しない
-        if (nowServerNum >= SERVER_NUM)
+        //生成フラグをfalseの場合生成を行わない
+        if(AddControl.IsCreate == false)
         {
             return;
         }
@@ -249,5 +255,18 @@ public class ServerList : MonoBehaviour
         }
 
         selectServerRoom = _serverRoom;
+    }
+
+    void SceneLoaded(Scene nextScene,LoadSceneMode mode)
+    {
+        //次のシーンがAddServerSceneの場合
+        if(nextScene.name == "AddServerScene")
+        {
+            //AddControlにServerListを渡す
+            AddControl addControl = GameObject.Find("AddControl").GetComponent<AddControl>();
+            addControl.GetServerList(serverRoomList);
+        }
+
+        SceneManager.sceneLoaded -= SceneLoaded;
     }
 }

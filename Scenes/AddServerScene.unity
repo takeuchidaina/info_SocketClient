@@ -856,6 +856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasCheck: {fileID: 0}
+  warningMessage: {fileID: 140817879}
 --- !u!4 &888325616
 Transform:
   m_ObjectHideFlags: 0
@@ -1256,6 +1257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cb3f6d22846fc842a6d5a37b4e580f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inPut: {fileID: 1216035698}
 --- !u!1 &1333887363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2016,6 +2018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cb3f6d22846fc842a6d5a37b4e580f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inPut: {fileID: 1842446490}
 --- !u!1 &1943948727
 GameObject:
   m_ObjectHideFlags: 0
