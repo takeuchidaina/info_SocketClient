@@ -267,6 +267,14 @@ public class ServerList : MonoBehaviour
             addControl.GetServerList(serverRoomList);
         }
 
+        if(nextScene.name == "ManipulateScene")
+        {
+            //ServerConnectにSelectServerのIP情報を渡す
+            ServerConnect serverConnect = 
+                GameObject.Find("ServerConnect").GetComponent<ServerConnect>();
+            serverConnect.IpOrHost = selectServerRoom.ServerRoomIP;
+        }
+
         SceneManager.sceneLoaded -= SceneLoaded;
     }
 }
