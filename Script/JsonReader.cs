@@ -5,37 +5,53 @@ using System;       //UnityJsonを使う場合に必要
 using System.IO;    //ファイル書き込みに必要
 using System.Runtime.Serialization.Json;
 using System.Text;
-
+using System.Linq;
+using System.Collections.Specialized;
+using System.Threading;
+//2020/11/19
 // 入力されるJSONに合わせてクラスを作成
+
+public enum eType
+{
+    Int,
+    Double,
+    String,
+    Bool
+}
+
 public class InputJson
 {
-    public double DefaultFixeduTalkEndTime;        //保存形式:double 変更形式:テキストボックス or シークバー  
-    public double MaxTalkTime;                     //保存形式:double 変更形式:テキストボックス or シークバー
-    public double FacingTimeout;                   //保存形式:double 変更形式:テキストボックス or シークバー
-    public double AnnouncingTimeout;               //保存形式:double 変更形式:テキストボックス or シークバー
-    public int    WebCamID;                        //保存形式:int    変更形式:テキストボックス or シークバー
-    public int    BufferCount;                     //保存形式:int    変更形式:テキストボックス or シークバー
-    public double BufferLength;                    //保存形式:double 変更形式:テキストボックス or シークバー
-
-    /*"各種サーバーURL"                             String ドロップダウンリスト*/
-    public string URL1;                            //保存形式:string 変更形式:テキストボックス
-    public string URL2;                            //保存形式:string 変更形式:テキストボックス
-    public string URL3;                            //保存形式:string 変更形式:テキストボックス
-
-    public string NoisePath;                       //保存形式:string 変更形式:テキストボックス
-    public string TSJapaneseTalker_VoiceFile;      //保存形式:string 変更形式:テキストボックス
-    public string TSJapaneseTalker_DicPath;        //保存形式:string 変更形式:テキストボックス
-    public string TSJapaneseTalker_UserDicFile;    //保存形式:string 変更形式:テキストボックス
-
-    public bool   IsBannerManager;                 //保存形式:bool   変更形式:ダイアログボックス
-    public bool   IsWeatherManager;                //保存形式:bool   変更形式:ダイアログボックス
-    public bool   IsInfraRedDetection;             //保存形式:bool   変更形式:ダイアログボックス
-    public bool   IsFaceRecognizer;                //保存形式:bool   変更形式:ダイアログボックス
-
+     //配列にも対応
+      public string[] nameList = new string[] { };
+      public string[] contentsList = new string[] { };
 }
+
+public class Type
+{
+    public string typeContentsList;
+    public eType type;
+}
+
 
 public class JsonReader : MonoBehaviour
 {
+
+    Dictionary<string, string> myTable = new Dictionary<string, string>();
+
+    public Dictionary<string, string> MyTable
+    {
+        get { return myTable; }
+    }
+
+    Dictionary<string, Type> myTableType = new Dictionary<string, Type>();
+
+
+    public Dictionary<string, Type> MyTableType
+    {
+        get { return myTableType; }
+    }
+
+
     // 保存するファイル名
     const string SAVE_FILE_PATH = "input.json";
 
@@ -44,192 +60,311 @@ public class JsonReader : MonoBehaviour
 
     //jsonを入れる用のクラス
     public InputJson inputJson;
-    public InputJson data;
+    List<string> nameList = new List<string>();
+    List<string> contentsList = new List<string>();
+    public string[] textMessage; //テキストの加工前の一行を入れる変数
+    public string[,] textWords; //テキストの複数列を入れる2次元は配列 
 
-    System.Diagnostics.Process p = null;
+    private int rowLength; //テキスト内の行数を取得する変数
+    private int columnLength; //テキスト内の列数を取得する変数
 
-    //ファイルに書き込む
-    void Write()
+    private System.Diagnostics.Process P = null;
+    int cnt =0;
+    void Start()
     {
-        data = new InputJson();
+        Load();
+    }
 
-        data.DefaultFixeduTalkEndTime = inputJson.DefaultFixeduTalkEndTime;
-        data.MaxTalkTime = inputJson.MaxTalkTime;
-        data.FacingTimeout = inputJson.FacingTimeout;
-        data.AnnouncingTimeout = inputJson.AnnouncingTimeout;
-        data.WebCamID = inputJson.WebCamID;
-        data.BufferCount = inputJson.BufferCount;
-        data.BufferLength = inputJson.BufferLength;
-        data.URL1 = inputJson.URL1;
-        data.URL2 = inputJson.URL2;
-        data.URL3 = inputJson.URL3;
-        data.NoisePath = inputJson.NoisePath;
-        data.TSJapaneseTalker_VoiceFile = inputJson.TSJapaneseTalker_VoiceFile;
-        data.TSJapaneseTalker_DicPath = inputJson.TSJapaneseTalker_DicPath;
-        data.TSJapaneseTalker_UserDicFile = inputJson.TSJapaneseTalker_UserDicFile;
-        data.IsBannerManager = inputJson.IsBannerManager;
-        data.IsWeatherManager = inputJson.IsWeatherManager;
-        data.IsInfraRedDetection = inputJson.IsInfraRedDetection;
-        data.IsFaceRecognizer = inputJson.IsFaceRecognizer;
+    void Update()
+    {
+        // Sキーで変更とセーブの実行
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("セーブ実行");
+            //書き込み
+            Write(inputJson);
+        }
 
-        // JSONにシリアライズ
-        var json = JsonUtility.ToJson(data, true);
+        // Lキーでリロード実行
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("ロード実行");
+            for (int i=0; i<2;i++)
+            {
+                var path = Application.dataPath + "/Resources/" + SAVE_FILE_PATH;
+
+                P = System.Diagnostics.Process.Start(path);
+
+                Thread.Sleep(65);
+
+                P.Kill();
+
+                //今の中身を削除
+                MyTable.Clear();
+                MyTableType.Clear();
+                List<string> _nameList = new List<string>();
+                List<string> _contentsList = new List<string>();
+                nameList = _nameList;
+                contentsList = _contentsList;
+
+                //リロード
+                Load();
+
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("aaa");
+            inputJson.nameList[0] = "aaaaa";
+            inputJson.contentsList[0] = "11111";
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {  
+            foreach (string Key in myTableType.Keys)
+            {
+                Debug.Log(Key);
+
+            }
+
+            foreach (Type _type in myTableType.Values)
+            {
+               Debug.Log(_type.type + ":" + _type.typeContentsList);
+            }
+        }
+    }
+    //ファイルに書き込む
+    void Write(InputJson data)
+    {
 
         // Assetsフォルダに保存する
         var path = Application.dataPath + "/Resources/" + SAVE_FILE_PATH;
 
         var writer = new StreamWriter(path, false);    //false:上書き書き込み
                                                        //true :追加書き込み
-        writer.WriteLine(json);
+        writer.WriteLine("{");
+
         writer.Flush();
         writer.Close();
+
+        var wwriter = new StreamWriter(path, true);    //false:上書き書き込み
+                                                       //true :追加書き込み
+                                                       
+        for (int i = 0; i < myTable.Count; i++)
+        {
+            //文字を見つける処理
+            var character = "!#$%&'()=~|`{+*}<>?-^@[;:],/QWERTYUIOPASDFGHJKLZXCVBNM_qwertyuiopasdfghjklzxcvbnm";
+            bool flg = false;
+            //characterの長さを取得してその分for文で回す
+            for (int n = 0; n < character.Length; n++)
+            {
+                if (inputJson.contentsList[i].Contains(character[n].ToString()) == true)
+                {
+                    flg = true;
+                }
+            }
+
+            if (i != myTable.Count - 1 && flg == true) 
+            {
+                wwriter.WriteLine("    \"" + inputJson.nameList[i] + "\":\"" + inputJson.contentsList[i] + "\",");
+            }
+            else if(i != myTable.Count - 1 && flg == false)
+            {
+                wwriter.WriteLine("    \"" + inputJson.nameList[i] + "\":" + inputJson.contentsList[i] + ",");
+            }
+            else if (i == myTable.Count - 1 && flg == false)
+            {
+                wwriter.WriteLine("    \"" + inputJson.nameList[i] + "\":" + inputJson.contentsList[i] + ",");
+            }
+            else
+            {
+                wwriter.WriteLine("    \"" + inputJson.nameList[i] + "\":\"" + inputJson.contentsList[i] + "\"");
+            }
+        }
+
+        wwriter.WriteLine("}");
+        wwriter.Flush();
+        wwriter.Close();
+
     }
 
-    //デバッグログ表示
-    void Log()
+    void Load()
     {
-        Debug.Log(inputJson.DefaultFixeduTalkEndTime);
-        Debug.Log(inputJson.MaxTalkTime);
-        Debug.Log(inputJson.FacingTimeout);
-        Debug.Log(inputJson.AnnouncingTimeout);
-        Debug.Log(inputJson.WebCamID);
-        Debug.Log(inputJson.BufferCount);
-        Debug.Log(inputJson.BufferLength);
-        Debug.Log(inputJson.URL1);
-        Debug.Log(inputJson.URL2);
-        Debug.Log(inputJson.URL3);
-        Debug.Log(inputJson.NoisePath);
-        Debug.Log(inputJson.TSJapaneseTalker_VoiceFile);
-        Debug.Log(inputJson.TSJapaneseTalker_DicPath);
-        Debug.Log(inputJson.TSJapaneseTalker_UserDicFile);
-        Debug.Log(inputJson.IsBannerManager);
-        Debug.Log(inputJson.IsWeatherManager);
-        Debug.Log(inputJson.IsInfraRedDetection);
-        Debug.Log(inputJson.IsFaceRecognizer);
-    }
-
-    int IdentifyType<T>(T x)
-    {
-        if (x.GetType() == typeof(int))
-        {
-            return 1;
-        }
-        else
-        if (x.GetType() == typeof(double))
-        {
-            return 2;
-        }
-        else
-        if (x.GetType() == typeof(bool))
-        {
-            return 3;
-        }
-        else
-        if (x.GetType() == typeof(string))
-        {
-            return 4;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    /*
-     JsonUtility.ToJsonを知る前にやってた試行錯誤の残骸
-     外部ファイルオープン＆クローズはなんかに使いそうだから残しときます
-
-     int a;
-     bool aflg;
-    */
-
-    void Start()
-    {
-        /*
-         JsonUtility.ToJsonを知る前にやってた試行錯誤の残骸
-
-         a = 0;
-         aflg = false;
-        */
-
+        //やり方ぐっちゃぐちゃ
+        inputJson = new InputJson();
         // 入力ファイルはAssets/Resources/input.json
-        // input.jsonをテキストファイルとして読み取り、string型で受け取る
-        inputString = Resources.Load<TextAsset>("input").ToString();
 
-        // 上で作成したクラスへデシリアライズ
-        inputJson = JsonUtility.FromJson<InputJson>(inputString);
+        var lineCount = -2;
+        var path = Application.dataPath + "/Resources/" + SAVE_FILE_PATH;
+        var reader = File.OpenText(path);
 
-        //ログ表示
-        Log();
+        while (reader.ReadLine() != null)
+        {
+            lineCount++;
+        }
+
+        //これで配列サイズの変更ができる
+        Array.Resize(ref inputJson.nameList, lineCount);
+        Array.Resize(ref inputJson.contentsList, lineCount);
+
+        TextAsset textasset = Resources.Load("input", typeof(TextAsset)) as TextAsset; //Resourcesフォルダから対象テキストを取得
+        string TextLines = textasset.text; //テキスト全体をstring型で入れる変数を用意して入れる
+
+        //Splitで一行づつを代入した1次配列を作成
+        textMessage = TextLines.Split('\n'); //
+
+        //行数と列数を取得
+        columnLength = textMessage[0].Split('\t').Length;
+        rowLength = textMessage.Length;
+
+        //2次配列を定義
+        textWords = new string[rowLength, columnLength];
+
+        for (int i = 0; i < rowLength - 1; i++)
+        {
+            string[] tempWords = textMessage[i].Split('\t'); //textMessageをカンマごとに分けたものを一時的にtempWordsに代入
+
+            for (int n = 0; n < columnLength; n++)
+            {
+                if (tempWords[n].Contains("{") != true && tempWords[n].Contains("}") != true)
+                {
+                    textWords[i, n] = tempWords[n]; //2次配列textWordsにカンマごとに分けたtempWordsを代入していく
+
+                    string z = textWords[i, n];
+
+                    //削除する文字の配列
+                    char[] removeChars = new char[] { '"', ',', ' ' };
+
+                    //削除する文字を1文字ずつ削除する
+                    foreach (char c in removeChars)
+                    {
+                        z = z.Replace(c.ToString(), "");
+                    }
+                    string[] d = z.Split(':');
+                    Array.Resize(ref inputJson.nameList, lineCount);
+                    Array.Resize(ref inputJson.contentsList, lineCount);
+
+                    for (int c = 0; c < inputJson.nameList.Length; c++)
+                    {
+                        inputJson.nameList[c] = d[0];
+                        inputJson.contentsList[c] = d[1];
+                        break;
+                    }
+
+                    string a = inputJson.contentsList[n];
+                    string s = "";
+
+                    for (int c = 0; c < a.Length - 1; c++)
+                    {
+                        char b = a[c];
+                        s += b;
+                    }
+
+                    inputJson.contentsList[n] = s;
+
+                    nameList.Add(inputJson.nameList[n]);
+                    contentsList.Add(inputJson.contentsList[n]);
+                    myTable.Add(inputJson.nameList[n], inputJson.contentsList[n]);
+
+                    Type type = new Type();
+
+                    type.typeContentsList = inputJson.contentsList[n];
+
+                    //中身を見て型処理
+                    type.type = TypeJudgment(type.typeContentsList);
+                   // Debug.Log(type.typeContentsList+"の中身(型)：" +TypeJudgment(type.typeContentsList));
+                    myTableType.Add(inputJson.nameList[n], type);
+                }
+            }
+        }
+
+        for (int i = 0; i < nameList.Count(); i++)
+        {
+            inputJson.contentsList[i] = contentsList[i];
+            inputJson.nameList[i] = nameList[i];
+        }
+
     }
 
-    void Update()
+    //入力した名前と値から型を判断する関数
+    eType TypeJudgment(string _type)
     {
-        /*
-        JsonUtility.ToJsonを知る前にやってた試行錯誤の残骸
+        eType ans = eType.String;
+        var Int = 0;
+        var Double = 0;
+        var String = 0;
+        var Bool = 0;
 
-        if(aflg==true)
+        //文字を見つける処理
+        var character = "!#$%&'()=~|`{+*}<>?-^@[;:],/QWERTYUIOPASDFGHJKLZXCVBNM_qwertyuiopasdfghjklzxcvbnm";
+
+        //characterの長さを取得してその分for文で回す
+        for (int i = 0; i < character.Length; i++)
         {
-            a++;
-        }
-        */
-
-        // Sキーで変更とセーブの実行
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            inputJson.NoisePath = "うらべひろかず";
-            inputJson.DefaultFixeduTalkEndTime = 1024;
-
-            //書き込み
-            Write();
-
-            /*
-            JsonUtility.ToJsonを知る前にやってた試行錯誤の残骸
-
-            //メモ帳を起動する
-            //p = System.Diagnostics.Process.Start(Application.dataPath + "/Resources/" + SAVE_FILE_PATH);
-
-            aflg = true;
-            */
-
-            Debug.Log("変更：NoisePathとDefaultFixeduTalkEndTime");
-            Debug.Log("変更：うらべひろかず、1024");
+            //Containsは指定したのを探索、結果をtrue,falseで返してくれる
+            //ToStringは変数をstringに変換してくれる
+            if (_type.Contains(character[i].ToString()) == true)
+            {
+                String++;
+            }
         }
 
-        /*
-        JsonUtility.ToJsonを知る前にやってた試行錯誤の残骸
+        //数字を見つける処理
+        var number = "0123456789";
 
-        //開いたメモ帳を閉じる
-        if (p != null && a > 15) 
+        //numberの長さを取得してその分for文で回す
+        for (int i = 0; i < number.Length; i++)
         {
-            p.Kill();
-            p = null;
-            a = 0;
-            aflg = false;
-        }
-        */
-
-        // Lキーでロード実行
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            inputString = JsonUtility.ToJson(inputJson);
-
-            //ログ表示
-            Log();
+            if (_type.Contains(number[i].ToString()) == true)
+            {
+                Int++;
+            }
         }
 
-        // 変数の識別
-        bool a = false;
+        //.を見つける処理
+        char dot = '.';
 
-        // 変数の中身表示
-        if (IdentifyType(a)==1)
+        if (_type.Contains(dot) == true && _type[0] != dot && _type[_type.Length - 1] != dot)
         {
-            Debug.Log("intだよ");
-        }
-        else
-        {
-            Debug.Log("intじゃないよ");
+            Double++;
         }
 
+        if (_type.Contains(dot) == true && _type[0] == dot || _type[_type.Length - 1] == dot)
+        {
+            String++;
+        }
+
+        if (_type == "true" || _type == "false")
+        {
+            Bool++;
+        }
+
+        //文字列の場合
+        if (String != 0)
+        {
+            ans = eType.String;
+        }
+
+        //整数の場合
+        if (String == 0 && Int != 0 && Double == 0)
+        {
+            ans = eType.Int;
+        }
+
+        //少数ありの場合
+        if (String == 0 && Int != 0 && Double != 0)
+        {
+            ans = eType.Double;
+        }
+
+        //boolの場合
+        if (Bool != 0)
+        {
+            ans = eType.Bool;
+        }
+
+        return ans;
     }
 }
+//動くけどやり方がヤバい
