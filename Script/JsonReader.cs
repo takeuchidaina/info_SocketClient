@@ -51,6 +51,12 @@ public class JsonReader : MonoBehaviour
         get { return myTableType; }
     }
 
+    int myTableCnt;
+
+    public int MyTableCnt
+    {
+        get { return myTableCnt; }
+    }
 
     // 保存するファイル名
     const string SAVE_FILE_PATH = "input.json";
@@ -132,6 +138,7 @@ public class JsonReader : MonoBehaviour
             {
                Debug.Log(_type.type + ":" + _type.typeContentsList);
             }
+            Debug.Log(MyTableCnt);
         }
     }
     //ファイルに書き込む
@@ -285,6 +292,7 @@ public class JsonReader : MonoBehaviour
             inputJson.nameList[i] = nameList[i];
         }
 
+        myTableCnt = myTable.Count;
     }
 
     //入力した名前と値から型を判断する関数
