@@ -25,8 +25,8 @@ public class TextUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        string unitychanHP = script.inputJson.NoisePath;    //新しく変数を宣言してその中にUnityChanScriptの変数HPを代入する
-        TextFrame.text = string.Format(unitychanHP);        //UI表示
+        //string unitychanHP = script.inputJson.NoisePath;    //新しく変数を宣言してその中にUnityChanScriptの変数HPを代入する
+        //TextFrame.text = string.Format(unitychanHP);        //UI表示
     }
 
 }
