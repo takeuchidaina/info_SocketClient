@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-//2020/11/19
+//現在使用しません
 public class AddJsonList : MonoBehaviour
 {
     //残骸だけと何かしらに使いそうだから残しておく
@@ -37,13 +37,11 @@ public class AddJsonList : MonoBehaviour
         }
     }*/
 
-    GameObject jsonReader;    //jsonReaderScriptが入るゲームオブジェクトの変数
-
-    JsonReader script;        //jsonReaderScriptが入る変数
-
     public InputField textName;        //テキストの名前が入る変数
+    public InputField textContents;    //テキストの内容が入る変数
 
-    public InputField TextContents;    //テキストの内容が入る変数
+    public Text textNameBox;            //テキストの名前を入力してる場所が入る変数
+    public Text textContentsBox;        //テキストの内容を入力してる場所が入る変数
 
     string readTextName;         //string型で一旦名前を格納
 
@@ -60,24 +58,22 @@ public class AddJsonList : MonoBehaviour
     //名前入れる方
     List<string> nameList = new List<string>();
 
-    public string Get_NameList(int num)
-    {
-        if (nameList.Count != 0) 
-        {
-                for (int i = 0; i < nameList.Count; i++)
-                {
-                    return nameList[i];
-                }
-        }
-
-        return null;
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        jsonReader = GameObject.Find("testObject");         //オブジェクトの名前から取得して変数に格納する
-        script = jsonReader.GetComponent<JsonReader>();     //オブジェクトの中にあるjsonReaderScriptを取得して変数に格納する
+        GameObject nameInput = GameObject.Find("NameInput");         //オブジェクトの名前から取得して変数に格納する
+        textName = nameInput.GetComponent<InputField>();     //オブジェクトの中にあるjsonReaderScriptを取得して変数に格納する
+
+        GameObject contentsInput = GameObject.Find("ContentsInput");         //オブジェクトの名前から取得して変数に格納する
+        textContents = contentsInput.GetComponent<InputField>();     //オブジェクトの中にあるjsonReaderScriptを取得して変数に格納する
+
+        GameObject textNameInput = GameObject.Find("TextNameInput");         //オブジェクトの名前から取得して変数に格納する
+        textNameBox = textNameInput.GetComponent<Text>();     //オブジェクトの中にあるjsonReaderScriptを取得して変数に格納する
+
+        GameObject textContentsInput = GameObject.Find("TextContentsInput");         //オブジェクトの名前から取得して変数に格納する
+        textContentsBox = textContentsInput.GetComponent<Text>();     //オブジェクトの中にあるjsonReaderScriptを取得して変数に格納する
+
     }
 
     // Update is called once per frame
@@ -88,7 +84,8 @@ public class AddJsonList : MonoBehaviour
         {
             //入力されたものを仮の箱に代入
             readTextName = textName.text;
-            readTextContents = TextContents.text;
+            readTextContents = textContents.text;
+
 
             Debug.Log("名前"+readTextName);
             Debug.Log("内容"+readTextContents);
@@ -132,25 +129,19 @@ public class AddJsonList : MonoBehaviour
                 default:
                     break;
             }
-
-            textName.text = "";
-            TextContents.text = " ";
         }
 
         //Qを押されたら
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("int   :" + intList.Count);
+            /*Debug.Log("int   :" + intList.Count);
             Debug.Log("double:" + doubleList.Count);
             Debug.Log("string:" + stringList.Count);
-            Debug.Log("bool  :" + boolList.Count);
-
-            Debug.Log("name  :" + nameList[0]);
-            Debug.Log("name  :" + nameList[1]);
+            Debug.Log("bool  :" + boolList.Count);*/
 
             for (int i=0;i<nameList.Count;i++)
             {
-                Debug.Log("name  :" + Get_NameList(i));
+                Debug.Log("name  :" + nameList[i]);
             }
         }
     }
@@ -368,10 +359,10 @@ public class AddJsonList : MonoBehaviour
          ansの返り値 
 
         -1:登録不可
-         0:   int型として登録
-         1:double型として登録
-         2:string型として登録
-         3:  bool型として登録
+         0:   int型として登録してね
+         1:double型として登録してね
+         2:string型として登録してね
+         3:  bool型として登録してね
          */
     }
 }
