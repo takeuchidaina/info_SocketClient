@@ -359,7 +359,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7529013}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58d8ae5b70932564d9a83eb1d9f3f471, type: 3}
   m_Name: 
@@ -376,7 +376,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7529013}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cb3f6d22846fc842a6d5a37b4e580f8, type: 3}
+  m_Script: {fileID: 11500000, guid: c6dca54f136a76b44b998b59027ef615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inPut: {fileID: 7529014}
@@ -528,7 +528,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155252277}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58d8ae5b70932564d9a83eb1d9f3f471, type: 3}
   m_Name: 
@@ -545,7 +545,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 155252277}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cb3f6d22846fc842a6d5a37b4e580f8, type: 3}
+  m_Script: {fileID: 11500000, guid: c6dca54f136a76b44b998b59027ef615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inPut: {fileID: 155252278}
@@ -923,6 +923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TextFrame: {fileID: 723581830}
+  frame: 0
   jsonReader: {fileID: 0}
   script: {fileID: 0}
 --- !u!114 &723581830
@@ -1379,7 +1380,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1464482490}
-        m_MethodName: RemoteClient
+        m_MethodName: SendButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1544,6 +1545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f906f82a3c095e4468fea32bc89bd083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textMessage: []
 --- !u!114 &1563933179
 MonoBehaviour:
   m_ObjectHideFlags: 0

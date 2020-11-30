@@ -87,12 +87,12 @@ public class AddJsonList : MonoBehaviour
             readTextContents = textContents.text;
 
 
-            Debug.Log("名前"+readTextName);
-            Debug.Log("内容"+readTextContents);
+            //Debug.Log("名前"+readTextName);
+           // Debug.Log("内容"+readTextContents);
 
 
             //入力されたものの中身を調べどの型に当てはめるかを判断する
-            Debug.Log("作成される型：" + TypeJudgment(readTextName, readTextContents));
+          //  Debug.Log("作成される型：" + TypeJudgment(readTextName, readTextContents));
 
             string stringAdd = readTextName;
 
