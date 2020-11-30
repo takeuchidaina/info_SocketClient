@@ -34,7 +34,7 @@ public class SendSlashCommand : MonoBehaviour
     }
 
     //設定項目をSlashCommand化する処理
-    private void ChangeSlashCommand<T>(string _settingName, T _settingVariable)
+    public void ChangeSlashCommand<T>(string _settingName, T _settingVariable)
     {
         slashCommand = "/" + _settingName + " " + _settingVariable;
 
