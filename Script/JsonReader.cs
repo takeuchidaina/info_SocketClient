@@ -68,6 +68,16 @@ public class JsonReader : MonoBehaviour
     public InputJson inputJson;
     List<string> nameList = new List<string>();
     List<string> contentsList = new List<string>();
+
+    public List<string> NameList
+    {
+        get { return nameList; }
+    }
+    public List<string> ContentsList
+    {
+        get { return contentsList; }
+    }
+
     public string[] textMessage; //テキストの加工前の一行を入れる変数
     public string[,] textWords; //テキストの複数列を入れる2次元は配列 
 
@@ -139,6 +149,12 @@ public class JsonReader : MonoBehaviour
                Debug.Log(_type.type + ":" + _type.typeContentsList);
             }
             Debug.Log(MyTableCnt);
+
+            for(int i=0;i<MyTableCnt;i++)
+            {
+                Debug.Log(ContentsList[i]);
+                Debug.Log(NameList[i]);
+            }
         }
     }
     //ファイルに書き込む
