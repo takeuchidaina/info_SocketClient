@@ -6,6 +6,13 @@ using UnityEngine;
 
 public class ServerConnect : MonoBehaviour
 {
+    private string ipOrHost = "";
+
+    public string IpOrHost
+    {
+        set { this.ipOrHost = value; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +27,6 @@ public class ServerConnect : MonoBehaviour
 
     public int SendServer(string _sendMsg)
     {
-        //  string ipOrHost = SendButton.Get_IP;
-        string ipOrHost = "127.0.0.1";
         int port = 2001;
 
         do
