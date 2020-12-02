@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 //https://dobon.net/vb/dotnet/internet/tcpclientserver.html#section4 参考サイト
 
 public class ServerConnect : MonoBehaviour
 {
-    public IPHostEntry HostName/* = "127.0.0.1";*/;
-    public string ipOrHost;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,12 +21,9 @@ public class ServerConnect : MonoBehaviour
     public int SendServer(string _sendMsg)
     {
         //  string ipOrHost = SendButton.Get_IP;
-        //string ipOrHost = "127.0.0.1";
-        
+        string ipOrHost = "127.0.0.1";
         int port = 2001;
-        HostName = Dns.GetHostEntry(Dns.GetHostName());
-    
-        Debug.Log("ip:" + ipOrHost.ToString());
+
         do
         {
             //Debug.Log("通信開始　内容："+_sendMsg);
@@ -38,9 +32,8 @@ public class ServerConnect : MonoBehaviour
                 //Debug.Log("送信失敗");
                 return -1;
             }
-
             System.Net.Sockets.TcpClient tcp =
-               new System.Net.Sockets.TcpClient(ipOrHost.ToString(), port);    //tcpクライアント作成し接続
+               new System.Net.Sockets.TcpClient(ipOrHost, port);    //tcpクライアント作成し接続
             System.Net.Sockets.NetworkStream ns = tcp.GetStream();  //ネットワークストリーム取得
             ns.ReadTimeout = 10000;
             ns.WriteTimeout = 10000;    //タイムアウトの秒数
