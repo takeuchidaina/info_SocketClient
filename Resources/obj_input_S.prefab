@@ -89,8 +89,9 @@ GameObject:
   - component: {fileID: 2497283895062434059}
   - component: {fileID: 2497283895062434058}
   - component: {fileID: 2497283895062434057}
+  - component: {fileID: 5771518424719595512}
   m_Layer: 5
-  m_Name: obj_TextBox_S
+  m_Name: obj_input_S
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,17 +196,28 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2497283895062434058}
   m_TextComponent: {fileID: 2497283894424412373}
   m_Placeholder: {fileID: 2497283895585671006}
-  m_ContentType: 0
+  m_ContentType: 3
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5771518424719595512}
+        m_MethodName: InputLogger
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -216,6 +228,18 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+--- !u!114 &5771518424719595512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2497283895062434063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0507059038b32c642a09325fb8a87929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2497283895585671004
 GameObject:
   m_ObjectHideFlags: 0
