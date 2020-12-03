@@ -25,17 +25,21 @@ public class LoadScene : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "SettingsChangeScene")
         {
-            SceneManager.LoadScene("EditServerScene");
+            //SceneManager.LoadScene("EditServerScene");
+            SceneManager.LoadScene("ManipulateScene");
+            return;
         }
 
         if (SceneManager.GetActiveScene().name == "DirectSendScene")
         {
             SceneManager.LoadScene("ManipulateScene");
+            return;
         }
 
         if (ServerList.SelectServer == null) return;
 
         SceneManager.LoadScene("ManipulateScene");
+
     }
 
     //リモートクライアントシーンに移動

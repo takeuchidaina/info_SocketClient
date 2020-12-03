@@ -10,11 +10,16 @@ using UnityEngine.SceneManagement;
 
 *****************************************************************************************************/
 
+[Serializable]
 public class ServerRoom
 {
+    [SerializeField]
     private string serverRoomName;          //サーバーの名前
+    [SerializeField]
     private string serverRoomIP;            //サーバーのIP
+    [SerializeField]
     private string serverRoomIdentNum;      //サーバーの識別番号
+    [SerializeField]
     private string serverRoomLastConnect;   //サーバーの最終接続日
 
     //サーバーの名前のゲッター
@@ -69,6 +74,7 @@ public class ServerList : MonoBehaviour
 {
     private GameObject content;     //サーバールームを格納する場所
     private GameObject serverRoomPrefab;    //サーバールームObject
+    [SerializeField]
     private List<ServerRoom> serverRoomList = new List<ServerRoom>();    //サーバーリスト
     private static ServerRoom selectServerRoom = null;
     public const int SERVER_NUM = 5;        //サーバーの数//選択されているサーバールーム
@@ -273,6 +279,9 @@ public class ServerList : MonoBehaviour
             ServerConnect serverConnect = 
                 GameObject.Find("ServerConnect").GetComponent<ServerConnect>();
             serverConnect.IpOrHost = selectServerRoom.ServerRoomIP;
+
+            //接続情報を渡したのでnullリセットをする
+            selectServerRoom = null;
         }
 
         SceneManager.sceneLoaded -= SceneLoaded;
