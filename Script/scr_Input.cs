@@ -10,13 +10,10 @@ public class scr_Input : MonoBehaviour
     InputField inputField;
     string inputValue;
 
-
     void Start()
     {
-
         inputField = GetComponent<InputField>();
-
-        InitInputField();
+        inputValue = inputField.text;
 
     }
 
@@ -24,7 +21,7 @@ public class scr_Input : MonoBehaviour
     {
         inputValue = inputField.text;
         //ここで代入
-        Debug.Log("obj_Input_L :" + inputValue);
+        //Debug.Log("obj_Input_L :" + inputValue);
         //ログ表示
         InitInputField();
     }
@@ -36,12 +33,13 @@ public class scr_Input : MonoBehaviour
     }
 
     void InitInputField()
-    {
+    {//生成時に設定した値が消されると困るためStartには書かない
+
         inputField.text = "";
         // 値をリセット(フォーカスを外す)
         inputField.text = inputValue;
         //フォーカスを外した後に値を入れることで入力内容がわかる
-
+        
         //inputField_S.ActivateInputField();
         // フォーカス
     }
