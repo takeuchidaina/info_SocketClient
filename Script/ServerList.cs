@@ -118,6 +118,9 @@ public class ServerList : MonoBehaviour
 
         //サーバーの数を初期化
         nowServerNum = serverRoomList.Count;
+
+        //選択情報をリセット
+        selectServerRoom = null;
     }
 
     //オブジェクト生成後行う処理
@@ -271,17 +274,6 @@ public class ServerList : MonoBehaviour
             //AddControlにServerListを渡す
             AddControl addControl = GameObject.Find("AddControl").GetComponent<AddControl>();
             addControl.GetServerList(serverRoomList);
-        }
-
-        if(nextScene.name == "ManipulateScene")
-        {
-            //ServerConnectにSelectServerのIP情報を渡す
-            ServerConnect serverConnect = 
-                GameObject.Find("ServerConnect").GetComponent<ServerConnect>();
-            serverConnect.IpOrHost = selectServerRoom.ServerRoomIP;
-
-            //接続情報を渡したのでnullリセットをする
-            selectServerRoom = null;
         }
 
         SceneManager.sceneLoaded -= SceneLoaded;

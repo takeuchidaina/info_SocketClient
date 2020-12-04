@@ -6,17 +6,13 @@ using UnityEngine;
 
 public class ServerConnect : MonoBehaviour
 {
+    [SerializeField]
     private string ipOrHost = "";
-
-    public string IpOrHost
-    {
-        set { this.ipOrHost = value; }
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        ipOrHost = ServerList.SelectServer.ServerRoomIP;
     }
 
     // Update is called once per frame

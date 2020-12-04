@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4743971328213662716}
   - component: {fileID: 4743971328213662719}
-  - component: {fileID: 4743971328213662718}
+  - component: {fileID: 6021740397518578866}
   m_Layer: 0
   m_Name: ConfigManager
   m_TagString: Untagged
@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0143be81099bfb249b5ca71e614da097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sendSCommand: {fileID: 4743971328213662718}
---- !u!114 &4743971328213662718
+  changeSCommand: {fileID: 0}
+  jsonReader: {fileID: 0}
+--- !u!114 &6021740397518578866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,6 +55,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4743971328213662713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03d05f3260250e140927a4444dbdfc55, type: 3}
+  m_Script: {fileID: 11500000, guid: e42daa8fe421ec247922b76812bda5d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slashCommands: []
