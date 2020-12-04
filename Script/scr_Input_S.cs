@@ -45,11 +45,10 @@ public class scr_Input_S : MonoBehaviour
         else if (100 < value) value = 100;  //上限値を超えていたら上限値に設定
 
         inputValue = value.ToString("f1");  //ここで代入
-                                            //ここで代入
 
         slider.value = value;
 
-        Debug.Log("obj_Input_S :" + inputValue);
+        //Debug.Log("obj_Input_S :" + inputValue);
         //ログ表示
         InitInputField();
     }
