@@ -17,22 +17,24 @@ public class SendSlashCommand : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("isSend : "+isSend);
+        Debug.Log("isSend : " + isSend);
         Debug.Log("sendCnt : " + sendCnt);
-
-        if (isSend == true && sendCnt >= slashCommands.Count)
-        {
-            isSend = false;
-        }
-        else if(isSend == true && sendCnt < slashCommands.Count)
-        {
-            sendCnt++;
-        }
 
         //送りフラグがオンの場合
         if (isSend == true)
         {
             SendSCommand();
+        }
+
+        //送りフラグがオンでスラッシュコマンドの最大数-1を超える場合
+        if (isSend == true && sendCnt >= slashCommands.Count - 1)
+        {
+            isSend = false;
+        }
+        //送りフラグがオンでスラッシュコマンドの最大数を超えない場合
+        else if (isSend == true && sendCnt < slashCommands.Count)
+        {
+            sendCnt++;
         }
     }
 
