@@ -82,7 +82,7 @@ public class JsonReader : MonoBehaviour
     private int columnLength; //テキスト内の列数を取得する変数
 
     private System.Diagnostics.Process P = null;
-    void Start()
+    private void Awake()
     {
         Load();
     }
