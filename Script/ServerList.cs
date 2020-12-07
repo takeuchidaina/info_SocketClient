@@ -10,11 +10,16 @@ using UnityEngine.SceneManagement;
 
 *****************************************************************************************************/
 
+[Serializable]
 public class ServerRoom
 {
+    [SerializeField]
     private string serverRoomName;          //サーバーの名前
+    [SerializeField]
     private string serverRoomIP;            //サーバーのIP
+    [SerializeField]
     private string serverRoomIdentNum;      //サーバーの識別番号
+    [SerializeField]
     private string serverRoomLastConnect;   //サーバーの最終接続日
 
     //サーバーの名前のゲッター
@@ -69,6 +74,7 @@ public class ServerList : MonoBehaviour
 {
     private GameObject content;     //サーバールームを格納する場所
     private GameObject serverRoomPrefab;    //サーバールームObject
+    [SerializeField]
     private List<ServerRoom> serverRoomList = new List<ServerRoom>();    //サーバーリスト
     private static ServerRoom selectServerRoom = null;
     public const int SERVER_NUM = 5;        //サーバーの数//選択されているサーバールーム
@@ -112,6 +118,9 @@ public class ServerList : MonoBehaviour
 
         //サーバーの数を初期化
         nowServerNum = serverRoomList.Count;
+
+        //選択情報をリセット
+        selectServerRoom = null;
     }
 
     //オブジェクト生成後行う処理
@@ -265,14 +274,6 @@ public class ServerList : MonoBehaviour
             //AddControlにServerListを渡す
             AddControl addControl = GameObject.Find("AddControl").GetComponent<AddControl>();
             addControl.GetServerList(serverRoomList);
-        }
-
-        if(nextScene.name == "ManipulateScene")
-        {
-            //ServerConnectにSelectServerのIP情報を渡す
-            ServerConnect serverConnect = 
-                GameObject.Find("ServerConnect").GetComponent<ServerConnect>();
-            serverConnect.IpOrHost = selectServerRoom.ServerRoomIP;
         }
 
         SceneManager.sceneLoaded -= SceneLoaded;

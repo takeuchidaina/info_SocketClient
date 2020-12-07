@@ -8,24 +8,30 @@ public class ConfigChanger : MonoBehaviour
     string objName = "テキストボックス";
     string text;
     [SerializeField]
-    SendSlashCommand sendSCommand;
+    ChangeSlashCommand changeSCommand;  //スラッシュコマンド生成クラスのオブジェクト
+    [SerializeField]
+    JsonReader jsonReader;          //Json形式の情報を保持するクラスのオブジェクト
 
     private void Start()
     {
-        sendSCommand = this.GetComponent<SendSlashCommand>();
+        changeSCommand = this.GetComponent<ChangeSlashCommand>();
+        jsonReader = GameObject.Find("LoadObject").GetComponent<JsonReader>();
     }
 
     public void ChangeConfig()
     {
-        Debug.Log("世界");
-
+        //すべてのオブジェクトの値を格納するための
         Text[] myText = GameObject.Find(objName).GetComponentsInChildren<Text>();
 
-        text = myText[1].text;
+        for (int i = 0; i < jsonReader.MyTableCnt; i++)
+        {
+            changeSCommand.ChangeCommand(jsonReader.NameList[i],
+                jsonReader.MyTable[jsonReader.NameList[i]]);
+        }
 
-        sendSCommand.ChangeSlashCommand(objName, text);
+        //text = myText[1].text;
 
-        Debug.Log(myText[1].text);
+        //sendSCommand.ChangeSlashCommand(objName, text);
 
         myText = null;
     }
