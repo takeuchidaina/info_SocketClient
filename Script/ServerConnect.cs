@@ -7,7 +7,7 @@ using UnityEngine;
 public class ServerConnect : MonoBehaviour
 {
     [SerializeField]
-    private string ipOrHost = "";
+    public string ipOrHost = "";//接続したいPCのIP
 
     // Start is called before the first frame update
     void Start()
