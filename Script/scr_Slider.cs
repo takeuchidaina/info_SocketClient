@@ -22,9 +22,9 @@ public class scr_Slider : MonoBehaviour
         
     }
 
-    public float TextValue
+    public string TextValue
     {
-        get { return this.value; }
+        get { return inputObj.text; }
     }
 
     public void OnValueChanged()
