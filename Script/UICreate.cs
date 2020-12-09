@@ -22,11 +22,11 @@ public class UICreate : MonoBehaviour
     private Text[] names;               //項目名のテキスト
     private Dropdown[] dropDown;        //ドロップダウン格納
     private InputField[] inputs;        //インプットフィールド格納
+    JsonReader jsonReader;
 
-
-    /*生成数*/
-    const int MaxCreateNum = 50;    //最大生成数
-    int createNum = 3;              //生成する項目数
+    /*リストにある項目の配列*/
+    private string[] NameArray;                 //項目の名前
+    private Type[] TypeArray;                   //項目のタイプ
 
     /*座標*/
     Vector3 basisPos = new Vector3(0.0f, 700.0f, 0.0f);             //一番上
@@ -41,13 +41,18 @@ public class UICreate : MonoBehaviour
     void Start()
     {
         /*初期化*/
-        instances = new GameObject[MaxCreateNum];                   //配列初期化
-        sliders = new Slider[MaxCreateNum];
-        sliderinput = new GameObject[MaxCreateNum];
-        itemName = new GameObject[MaxCreateNum];
-        names = new Text[MaxCreateNum];
-        dropDown = new Dropdown[MaxCreateNum];
-        inputs = new InputField[MaxCreateNum];
+
+        JsonReader jsonReader = GameObject.Find("LoadObject").GetComponent<JsonReader>();
+
+        instances = new GameObject[jsonReader.MyTableCnt];                   //配列初期化
+        sliders = new Slider[jsonReader.MyTableCnt];
+        sliderinput = new GameObject[jsonReader.MyTableCnt];
+        itemName = new GameObject[jsonReader.MyTableCnt];
+        names = new Text[jsonReader.MyTableCnt];
+        dropDown = new Dropdown[jsonReader.MyTableCnt];
+        inputs = new InputField[jsonReader.MyTableCnt];
+        NameArray = new string[jsonReader.MyTableCnt];
+        TypeArray = new Type[jsonReader.MyTableCnt];
 
         /*プレハブ読み込み*/
         srider = (GameObject)Resources.Load("obj_Slider");          //スクロール
@@ -66,18 +71,86 @@ public class UICreate : MonoBehaviour
         //生成したインスタンスの名前を変更
         //instance.name = "テキストボックス";
 
-        /*テストで三つ生成する(スクロールのみ)*/
-        for (int i= 0; i < createNum; i++)//生成する数だけ繰り返す
+        jsonReader.MyTableType.Keys.CopyTo(NameArray,0);    //名前
+        jsonReader.MyTableType.Values.CopyTo(TypeArray, 0); //タイプ
+
+        
+        for (int i= 0; i < jsonReader.MyTableCnt; i++)//生成する数だけ繰り返す
         {
-         //     instances[i] = (GameObject)Instantiate(srider, basisPos - (space * i), Quaternion.identity);
-         //     instances[i].transform.SetParent(gameObject.transform, false);
-         //     itemName[i] = (GameObject)Instantiate(text, basisPos - (space * i), Quaternion.identity);
-         //     itemName[i].transform.SetParent(gameObject.transform, false);
+            switch (TypeArray[i].type)
+            {
+                case eType.Int:
+                case eType.Double:
+                    //生成
+                    instances[i] = (GameObject)Instantiate(srider, sliderPos - (space * i), Quaternion.identity);
+                    sliderinput[i] = (GameObject)Instantiate(input_S, slidertextPos - (space * i), Quaternion.identity);
+                    itemName[i] = (GameObject)Instantiate(text, textPos - (space * i), Quaternion.identity);
+                    //親オブジェクト設定
+                    instances[i].transform.SetParent(gameObject.transform, false);
+                    sliderinput[i].transform.SetParent(gameObject.transform, false);
+                    itemName[i].transform.SetParent(gameObject.transform, false);
+                    //名前設定
+                    instances[i].name = NameArray[i];
+                    sliderinput[i].name = instances[i].name + "InputObj";
+                    itemName[i].name = instances[i].name + "NameObj";
+                    //項目名
+                    names[i] = itemName[i].GetComponent<Text>();
+                    names[i].text = instances[i].name;
+                    //値の設定
+                    sliders[i] = instances[i].GetComponent<Slider>();
+                    inputs[i] = sliderinput[i].GetComponent<InputField>();
+                    inputs[i].text = "1211";
+                    break;
+
+                case eType.String:
+                    //設定
+                    instances[i] = (GameObject)Instantiate(input_L, basisPos - (space * i), Quaternion.identity);
+                    itemName[i] = (GameObject)Instantiate(text, textPos - (space * i), Quaternion.identity);
+                    //親オブジェクト設定
+                    instances[i].transform.SetParent(gameObject.transform, false);
+                    itemName[i].transform.SetParent(gameObject.transform, false);
+                    //名前設定
+                    instances[i].name = NameArray[i];
+                    itemName[i].name = instances[i].name + "NameObj";
+                    //項目名
+                    names[i] = itemName[i].GetComponent<Text>();
+                    names[i].text = instances[i].name;
+                    //値の設定
+                    inputs[i] = instances[i].GetComponent<InputField>();
+                    inputs[i].text = "test input";
+                    break;
+
+                case eType.Bool:
+                    //生成
+                    instances[i] = (GameObject)Instantiate(dropDown_S, dropS_Pos - (space * i), Quaternion.identity);
+                    itemName[i] = (GameObject)Instantiate(text, textPos - (space * i), Quaternion.identity);
+                    //親オブジェクト設定
+                    instances[i].transform.SetParent(gameObject.transform, false);
+                    itemName[i].transform.SetParent(gameObject.transform, false);
+                    //名前設定
+                    instances[i].name = NameArray[i];
+                    itemName[i].name = instances[i].name + "NameObj";
+                    //項目名
+                    names[i] = itemName[i].GetComponent<Text>();
+                    names[i].text = instances[i].name;
+                    //値の設定
+                    dropDown[i] = instances[i].GetComponent<Dropdown>();
+                    //項目のクリア
+                    dropDown[i].ClearOptions();
+                    //項目追加
+                    dropDown[i].options.Add(new Dropdown.OptionData { text = "true" });
+                    dropDown[i].options.Add(new Dropdown.OptionData { text = "false" });
+                    //初期の値の設定
+                    dropDown[i].value = 1;
+                    break;
+                default:
+                break;
+            }
         }
 
-        /*テスト*/
+        /*テスト
         
-        /*スライダー*/
+        //スライダー
         instances[0] = (GameObject)Instantiate(srider, sliderPos - (space * 0), Quaternion.identity);
         sliderinput[0] = (GameObject)Instantiate(input_S, slidertextPos - (space * 0), Quaternion.identity);
         itemName[0] = (GameObject)Instantiate(text, textPos - (space * 0), Quaternion.identity);
@@ -87,21 +160,19 @@ public class UICreate : MonoBehaviour
         instances[0].name = "スライダー";
         sliderinput[0].name = instances[0].name + "InputObj";
         itemName[0].name = instances[0].name + "NameObj";
-        /*初期値の設定*/
         names[0] = itemName[0].GetComponent<Text>();
         names[0].text = instances[0].name ;
         sliders[0] = instances[0].GetComponent<Slider>();
         inputs[0] = sliderinput[0].GetComponent<InputField>();
         inputs[0].text = "1211";
 
-        /*ドロップダウン(長)*/
+        //ドロップダウン
         instances[1] = (GameObject)Instantiate(dropDown_L, basisPos - (space * 1), Quaternion.identity);
         itemName[1] = (GameObject)Instantiate(text, textPos - (space * 1), Quaternion.identity);
         instances[1].transform.SetParent(gameObject.transform, false);
         itemName[1].transform.SetParent(gameObject.transform, false);
         instances[1].name = "ドロップダウン_L";
         itemName[1].name = instances[1].name + "NameObj";
-        /*初期設定*/
         names[1] = itemName[1].GetComponent<Text>();
         names[1].text = instances[1].name;
         dropDown[1] = instances[1].GetComponent<Dropdown>();
@@ -111,15 +182,13 @@ public class UICreate : MonoBehaviour
         dropDown[1].options.Add(new Dropdown.OptionData { text = "logi3" });
         dropDown[1].value = 2;                                              //生成時に選択されている項目
 
-
-        /*ドロップダウン(短)*/
+        //ドロップダウン(短)
         instances[2] = (GameObject)Instantiate(dropDown_S, dropS_Pos - (space * 2), Quaternion.identity);
         itemName[2] = (GameObject)Instantiate(text, textPos - (space * 2), Quaternion.identity);
         instances[2].transform.SetParent(gameObject.transform, false);
         itemName[2].transform.SetParent(gameObject.transform, false);
         instances[2].name = "ドロップダウン_S";
         itemName[2].name = instances[2].name + "NameObj";
-        /*初期設定*/
         names[2] = itemName[2].GetComponent<Text>();
         names[2].text = instances[2].name;
         dropDown[2] = instances[2].GetComponent<Dropdown>();
@@ -129,18 +198,18 @@ public class UICreate : MonoBehaviour
         dropDown[2].value = 1;                                             //生成時に選択されている項目
 
 
-        /*テキストボックス*/
+        //テキストボックス
         instances[3] = (GameObject)Instantiate(input_L, basisPos - (space * 3), Quaternion.identity);
         itemName[3] = (GameObject)Instantiate(text, textPos - (space * 3), Quaternion.identity);
         instances[3].transform.SetParent(gameObject.transform, false);
         itemName[3].transform.SetParent(gameObject.transform, false);
         instances[3].name = "テキストボックス";
         itemName[3].name = instances[3].name + "NameObj";
-        /*初期値の設定*/
         names[3] = itemName[3].GetComponent<Text>();
         names[3].text = instances[3].name;
         inputs[3] = instances[3].GetComponent<InputField>();
         inputs[3].text = "test input";
+        */
 
     }
 
