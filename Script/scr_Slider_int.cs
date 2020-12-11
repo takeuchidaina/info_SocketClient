@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
-public class scr_Slider : MonoBehaviour
+public class scr_Slider_int : MonoBehaviour
 {
     float value;
     string name;
     InputField inputObj;    //同期しているInputオブジェクト
+    scr_Input scr_input;
 
     // Start is called before the first frame update
     void Start()
     {
         name = (transform.name);                //名前取得
-        value = GetComponent<Slider>().value;   
+        value = GetComponent<Slider>().value;
         inputObj = GameObject.Find(name + "InputObj").GetComponent<InputField>();
 
     }
@@ -21,7 +23,7 @@ public class scr_Slider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public string TextValue
@@ -32,7 +34,7 @@ public class scr_Slider : MonoBehaviour
     public void OnValueChanged()
     {   //値が変更されたとき
         value = GetComponent<Slider>().value;   //値取得
-        inputObj.text = value.ToString("f1");   //取得した値をinputObjに送る
+        inputObj.text = value.ToString();
         //Debug.Log("slider" + value);
     }
 }
