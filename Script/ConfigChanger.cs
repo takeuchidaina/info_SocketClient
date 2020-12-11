@@ -21,7 +21,7 @@ public class ConfigChanger : MonoBehaviour
     public void ChangeConfig()
     {
         //すべてのオブジェクトの値を格納するための
-        Text[] myText = GameObject.Find(objName).GetComponentsInChildren<Text>();
+        //Text[] myText = GameObject.Find(objName).GetComponentsInChildren<Text>();
 
         for (int i = 0; i < jsonReader.MyTableCnt; i++)
         {
@@ -33,6 +33,6 @@ public class ConfigChanger : MonoBehaviour
 
         //sendSCommand.ChangeSlashCommand(objName, text);
 
-        myText = null;
+        //myText = null;
     }
 }
