@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System;       //UnityJsonを使う場合に必要
-using System.IO;    //ファイル書き込みに必要
-using System.Runtime.Serialization.Json;
-using System.Text;
+using System;
+using System.IO;
 using System.Linq;
-using System.Collections.Specialized;
 using System.Threading;
-//2020/11/19
-// 入力されるJSONに合わせてクラスを作成
 
+//2020/12/11
+//ファイルの中身を読み取って連想配列を作成します
+
+//どの型にするか判別するのに使うenum形
 public enum eType
 {
     Int,
@@ -19,6 +17,7 @@ public enum eType
     Bool
 }
 
+//テキストから読み取ったものを入れ込む用のクラス
 public class InputJson
 {
      //配列にも対応
@@ -26,18 +25,18 @@ public class InputJson
       public string[] contentsList = new string[] { };
 }
 
+//Values + どの型なのかを判別したやつを入れるクラス
 public class Type
 {
     public string typeContentsList;
     public eType type;
 }
 
-
 public class JsonReader : MonoBehaviour
 {
-
     Dictionary<string, string> myTable = new Dictionary<string, string>();
 
+    //読み込んだデータをKeyとValuesに入れ込んで登録
     public Dictionary<string, string> MyTable
     {
         get { return myTable; }
@@ -45,7 +44,7 @@ public class JsonReader : MonoBehaviour
 
     Dictionary<string, Type> myTableType = new Dictionary<string, Type>();
 
-
+    //読み込んだデータをKeyとValues + どの型なのかを判別したやつ で登録
     public Dictionary<string, Type> MyTableType
     {
         get { return myTableType; }
@@ -53,38 +52,74 @@ public class JsonReader : MonoBehaviour
 
     int myTableCnt;
 
+    //myTableTypeの要素数を返す
     public int MyTableCnt
     {
         get { return myTableCnt; }
     }
-
-    // 保存するファイル名
-    const string SAVE_FILE_PATH = "input.json";
 
     //jsonを入れる用のクラス
     public InputJson inputJson;
     List<string> nameList = new List<string>();
     List<string> contentsList = new List<string>();
 
+    //テキストから読み取ったやつ(名前)を配列にまとめたやつを取得出来ます
     public List<string> NameList
     {
         get { return nameList; }
     }
+
+    //テキストから読み取ったやつ(中身)を配列にまとめたやつを取得出来ます
     public List<string> ContentsList
     {
         get { return contentsList; }
     }
 
-    public string[] textMessage; //テキストの加工前の一行を入れる変数
-    public string[,] textWords; //テキストの複数列を入れる2次元は配列 
+    //保存するファイル名
+    private const string SAVE_FILE_PATH = "input.json";
 
-    private int rowLength; //テキスト内の行数を取得する変数
-    private int columnLength; //テキスト内の列数を取得する変数
+    //入力ファイルはAssets/Resources/input.json
+    private string path;
 
+    //テキストの加工前の一行を入れる変数
+    private string[] textMessage;
+
+    //テキストの複数列を入れる2次元は配列 
+    private string[,] textWords;
+
+    //テキスト内の行数を取得する変数
+    private int rowLength;
+
+    //テキスト内の列数を取得する変数
+    private int columnLength;
+
+    //テキストファイル開いたりするのに使う変数
     private System.Diagnostics.Process P = null;
+
     private void Awake()
     {
-        Load();
+        //入力ファイルはAssets/Resources/input.json
+        path = Application.dataPath + "/Resources/" + SAVE_FILE_PATH;
+
+        //指定先のファイルが存在するなら
+        if (!File.Exists(path))
+        {
+            //指定先にファイルを作成
+            CreateDefaultJson();
+
+            //開く
+            P = System.Diagnostics.Process.Start(path);
+
+            //待つ
+            Thread.Sleep(100);
+
+            //閉じる
+            P.Kill();
+        }
+        else
+        {
+            Load();
+        }
     }
 
     void Update()
@@ -98,21 +133,18 @@ public class JsonReader : MonoBehaviour
             Write();
         }
 
-        // Lキーでリロード実行
+        // Lキーでロード実行
         if (Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log("ロード実行");
 
             for (int i = 0; i < 2; i++)
             {
-                //パス指定
-                var path = Application.dataPath + "/Resources/" + SAVE_FILE_PATH;
-
                 //開く
                 P = System.Diagnostics.Process.Start(path);
 
                 //待つ
-                Thread.Sleep(65);
+                Thread.Sleep(100);
 
                 //閉じる
                 P.Kill();
@@ -129,9 +161,8 @@ public class JsonReader : MonoBehaviour
                 nameList = _nameList;
                 contentsList = _contentsList;
 
-                //リロード
+                //ロード
                 Load();
-
             }
         }
 
@@ -165,13 +196,10 @@ public class JsonReader : MonoBehaviour
             Debug.Log("MyTableCnt:" + MyTableCnt);
         }
     }
+
     //ファイルに書き込む
     void Write()
     {
-
-        // Assetsフォルダに保存する
-        var path = Application.dataPath + "/Resources/" + SAVE_FILE_PATH;
-
         var writer = new StreamWriter(path, false);    //false:上書き書き込み
                                                        //true :追加書き込み
         writer.WriteLine("{");
@@ -219,26 +247,20 @@ public class JsonReader : MonoBehaviour
         wwriter.WriteLine("}");
         wwriter.Flush();
         wwriter.Close();
-
     }
 
     void Load()
     {
         //やり方ぐっちゃぐちゃ
 
-        inputJson = new InputJson();
-
-        // 入力ファイルはAssets/Resources/input.json
-        var path = Application.dataPath + "/Resources/" + SAVE_FILE_PATH;
-
         //指定先のファイルが存在するなら
         if (!File.Exists(path))
         {
-            Debug.Log("存在しません");
-
             //指定先にファイルを作成
             CreateDefaultJson();
         }
+
+        inputJson = new InputJson();
 
         //テキストを開く
         var reader = File.OpenText(path);
@@ -487,7 +509,7 @@ public class JsonReader : MonoBehaviour
         defaultNameList.Add("IsFaceRecognizer");
         defaultNameList.Add("IsLanguageButton");
 
-        //名前(Key)とする奴から
+        //中身(Values)とする奴から
         defaultContentsList.Add("100");
         defaultContentsList.Add("10");
         defaultContentsList.Add("50");
@@ -530,6 +552,8 @@ public class JsonReader : MonoBehaviour
 
         //書き込み保存
         Write();
+
+        Debug.Log("生成完了：Lキーを押してロードしてください...");
     }
 }
 //動くけどやり方がヤバい
