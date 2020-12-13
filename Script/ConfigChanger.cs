@@ -5,23 +5,25 @@ using UnityEngine.UI;
 
 public class ConfigChanger : MonoBehaviour
 {
-    string objName = "テキストボックス";
-    string text;
     [SerializeField]
     ChangeSlashCommand changeSCommand;  //スラッシュコマンド生成クラスのオブジェクト
     [SerializeField]
-    JsonReader jsonReader;          //Json形式の情報を保持するクラスのオブジェクト
+    JsonReader jsonReader;              //Json形式の情報を保持するクラスのオブジェクト
+    [SerializeField]
+    GameObject[] configObject;          //自動生成された設定項目のUIオブジェクトを格納する配列 
 
     private void Start()
     {
+        //スクリプトをオブジェクトから取得し、格納する
         changeSCommand = this.GetComponent<ChangeSlashCommand>();
         jsonReader = GameObject.Find("LoadObject").GetComponent<JsonReader>();
+
+        //実体宣言
+        configObject = new GameObject[jsonReader.MyTableCnt];
     }
 
     public void ChangeConfig()
     {
-        //設定項目UIを格納する配列変数を宣言
-        GameObject[] configObject = new GameObject[jsonReader.MyTableCnt];
 
         //設定項目UIを格納する
         for(int i = 0; i < jsonReader.MyTableCnt; i++)
@@ -34,34 +36,38 @@ public class ConfigChanger : MonoBehaviour
             {
                 //Init型
                 case eType.Int:
-                    Debug.Log("おはよう");
+                    scr_Slider_int intData = configObject[i].GetComponent<scr_Slider_int>();
+                    ChangeCommand(configObject[i].name, intData.TextValue);
                     break;
                 //Double型
                 case eType.Double:
-                    Debug.Log("だぶる");
+                    scr_Slider doubleData = configObject[i].GetComponent<scr_Slider>();
+                    ChangeCommand(configObject[i].name, doubleData.TextValue);
                     break;
                 //String型
                 case eType.String:
-                    Debug.Log("すとりんぐ");
+                    scr_Input stringData = configObject[i].GetComponent<scr_Input>();
+                    ChangeCommand(configObject[i].name, stringData.TextValue);
                     break;
                 //Bool型
                 case eType.Bool:
-                    Debug.Log("ぶーる");
+                    scr_DropDown boolData = configObject[i].GetComponent<scr_DropDown>();
+                    ChangeCommand(configObject[i].name, boolData.TextValue);
                     break;
             }
+
         }
+    }
 
-
-        for (int i = 0; i < jsonReader.MyTableCnt; i++)
+    void ChangeCommand(string _objName,string _value)
+    {
+        //_valueがjsonReaderの初期値と同じ場合処理を行わない
+        if(jsonReader.MyTable[_objName] == _value)
         {
-            changeSCommand.ChangeCommand(jsonReader.NameList[i],
-                jsonReader.MyTable[jsonReader.NameList[i]]);
+            return;
         }
 
-        //text = myText[1].text;
-
-        //sendSCommand.ChangeSlashCommand(objName, text);
-
-        //myText = null;
+        //スラッシュコマンド化させる
+        changeSCommand.ChangeCommand(_objName, _value);
     }
 }
