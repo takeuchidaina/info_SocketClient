@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class ChangeSlashCommand : MonoBehaviour
 {
+    private const int SPLIT_COMMAND_NAME = 1;   //コマンド名取得用定数
+
     [SerializeField]
     private List<string> slashCommands;  //出力する / コマンドを格納する変数
 
@@ -23,6 +26,20 @@ public class ChangeSlashCommand : MonoBehaviour
         if (slashCommands.Count >= jsonReader.MyTableCnt)
         {
             return;
+        }
+
+        //すでに存在する/コマンドの場合パラメータを変更
+        for (int i = 0; i < slashCommands.Count; i++)
+        {
+            //生成済みの/コマンドをコマンドとパラメータに切り離す
+            string[] tmpCommand = slashCommands[i].Split('/', ' ');
+
+            //既に同じ/コマンドが生成されてた場合パラメータだけを変更する
+            if (tmpCommand[SPLIT_COMMAND_NAME] == _settingName)
+            {
+                slashCommands[i] = "/" + tmpCommand[SPLIT_COMMAND_NAME] + " " + _settingVariable;
+                return;
+            }
         }
 
         //スラッシュコマンド化したテキストを保存
