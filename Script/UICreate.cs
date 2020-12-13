@@ -83,7 +83,7 @@ public class UICreate : MonoBehaviour
         TypeArray = new Type[jsonReader.MyTableCnt];
         ContentsArray = new string[jsonReader.MyTableCnt];
 
-        scroll = new GameObject();
+        scroll = null;
 
         jsonReader.MyTableType.Keys.CopyTo(NameArray, 0);    //名前
         jsonReader.MyTableType.Values.CopyTo(TypeArray, 0);  //タイプ

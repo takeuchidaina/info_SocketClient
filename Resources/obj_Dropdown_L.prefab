@@ -682,7 +682,6 @@ GameObject:
   - component: {fileID: 4224144652154126321}
   - component: {fileID: 4224144652154126322}
   - component: {fileID: 1954464921870095933}
-  - component: {fileID: 7576933747746359478}
   m_Layer: 5
   m_Name: obj_Dropdown_L
   m_TagString: Untagged
@@ -829,26 +828,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7a1c85ab203d94b8a78dc45c7355db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7576933747746359478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4224144652154126316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 1
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!1 &4224144652445633156
 GameObject:
   m_ObjectHideFlags: 0
