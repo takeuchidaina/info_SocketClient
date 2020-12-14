@@ -101,7 +101,7 @@ public class JsonReader : MonoBehaviour
         //入力ファイルはAssets/Resources/input.json
         path = Application.dataPath + "/Resources/" + SAVE_FILE_PATH;
 
-        //指定先のファイルが存在するなら
+        //指定先のファイルが存在しない場合
         if (!File.Exists(path))
         {
             //指定先にファイルを作成
@@ -118,12 +118,16 @@ public class JsonReader : MonoBehaviour
         }
         else
         {
+            //存在するなら読み込む
             Load();
         }
     }
 
     void Update()
     {
+        //UIの値にする(contentsListを)
+        ChangeSetting();
+
         // Sキーで変更とセーブの実行
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -166,13 +170,6 @@ public class JsonReader : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("testとしては配列の0番目を書き換えます");
-            inputJson.nameList[0] = "aaaaa";
-            inputJson.contentsList[0] = "11111";
-        }
-
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("中身の表示をします");
@@ -198,7 +195,7 @@ public class JsonReader : MonoBehaviour
     }
 
     //ファイルに書き込む
-    void Write()
+    public void Write()
     {
         var writer = new StreamWriter(path, false);    //false:上書き書き込み
                                                        //true :追加書き込み
@@ -469,7 +466,7 @@ public class JsonReader : MonoBehaviour
     }
 
     //jsonファイルがない場合jsonファイルを作成しようとする関数
-    void CreateDefaultJson()
+    public void CreateDefaultJson()
     {
         Debug.Log("指定場所にファイルが存在しないから作成するよ");
         Debug.Log("場所：Assets/Resources/input.json");
@@ -554,6 +551,83 @@ public class JsonReader : MonoBehaviour
         Write();
 
         Debug.Log("生成完了：Lキーを押してロードしてください...");
+    }
+
+    //UIの値に書き換える処理
+    void ChangeSetting()
+    {
+        //UIで表示してるオブジェクトを探す(6種類あるからそれぞれを探す)
+        for (int i = 0; i < myTableCnt; i++)
+        {
+            //scr_Slider_intがあるオブジェクトを探す
+            scr_Slider_int sliderInt = GameObject.Find(inputJson.nameList[i]).GetComponent<scr_Slider_int>();
+
+            //見つけたらその番号のcontentsList[i]の値を書き換える
+            if (sliderInt !=null)
+            {
+                //Debug.Log(i+":"+ sliderInt.TextValue);
+                inputJson.contentsList[i] = sliderInt.TextValue;
+            }
+
+            //scr_Sliderがあるオブジェクトを探す
+            scr_Slider slider = GameObject.Find(inputJson.nameList[i]).GetComponent<scr_Slider>();
+
+            //見つけたらその番号のcontentsList[i]の値を書き換える
+            if (slider != null)
+            {
+                //Debug.Log(i + ":" + slider.TextValue);
+                inputJson.contentsList[i] = slider.TextValue;
+            }
+
+            //scr_DropDownがあるオブジェクトを探す
+            scr_DropDown dropDown = GameObject.Find(inputJson.nameList[i]).GetComponent<scr_DropDown>();
+
+            //見つけたらその番号のcontentsList[i]の値を書き換える
+            if (dropDown != null)
+            {
+                //Debug.Log(i + ":" + dropDown.TextValue);
+                inputJson.contentsList[i] = dropDown.TextValue;
+            }
+
+            //scr_Input_intがあるオブジェクトを探す
+            scr_Input_int inputInt = GameObject.Find(inputJson.nameList[i]).GetComponent<scr_Input_int>();
+
+            //見つけたらその番号のcontentsList[i]の値を書き換える
+            if (inputInt != null)
+            {
+                //Debug.Log(i + ":" + inputInt.TextValue);
+                inputJson.contentsList[i] = inputInt.TextValue;
+            }
+
+            //scr_Input_Sがあるオブジェクトを探す
+            scr_Input_S inputS = GameObject.Find(inputJson.nameList[i]).GetComponent<scr_Input_S>();
+
+            //見つけたらその番号のcontentsList[i]の値を書き換える
+            if (inputS != null)
+            {
+                //Debug.Log(i + ":" + inputS.TextValue);
+
+                //なんかfalseが空白で返されるのでif文で空白はfalseとして扱うようにしてます
+                if (inputS.TextValue == "true")
+                {
+                    inputJson.contentsList[i] = inputS.TextValue;
+                }
+                else
+                {
+                    inputJson.contentsList[i] = "false";
+                }
+            }
+
+            //scr_Inputがあるオブジェクトを探す
+            scr_Input input = GameObject.Find(inputJson.nameList[i]).GetComponent<scr_Input>();
+
+            //見つけたらその番号のcontentsList[i]の値を書き換える
+            if (input != null)
+            {
+                //Debug.Log(i + ":" + input.TextValue);
+                inputJson.contentsList[i] = input.TextValue;
+            }
+        }        
     }
 }
 //動くけどやり方がヤバい

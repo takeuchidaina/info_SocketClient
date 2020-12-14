@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 191524451}
   - component: {fileID: 191524450}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Default_Settings_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -746,6 +746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeSCommand: {fileID: 0}
   jsonReader: {fileID: 0}
+  configObject: []
 --- !u!1 &1046878681
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,7 +804,7 @@ GameObject:
   - component: {fileID: 1464482491}
   - component: {fileID: 1464482490}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Back_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1010,7 +1011,7 @@ GameObject:
   - component: {fileID: 1578554721}
   - component: {fileID: 1578554720}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Adapt_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1081,6 +1082,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 617468649}
         m_MethodName: ChangeConfig
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1046878682}
+        m_MethodName: Write
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
