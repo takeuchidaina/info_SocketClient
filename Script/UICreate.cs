@@ -36,7 +36,7 @@ public class UICreate : MonoBehaviour
 
     /*座標*/
     Vector2 view = new Vector2(0.0f, 300.0f);                   //スクロールビューの座標
-    Vector2 textPos = new Vector2(-155.0f,-70.0f);              //項目名
+    Vector2 textPos = new Vector2(0.0f,-70.0f);              //項目名
     Vector2 basisPos = new Vector2(0.0f, -140.0f);              //ベース
     Vector2 sliderPos =  new Vector2(-110.0f, -140.0f);         //スライダー
     Vector2 slidertextPos =  new Vector2(380.0f,-140.0f);       //スライダーのinput
@@ -83,7 +83,7 @@ public class UICreate : MonoBehaviour
         TypeArray = new Type[jsonReader.MyTableCnt];
         ContentsArray = new string[jsonReader.MyTableCnt];
 
-        scroll = new GameObject();
+        scroll = null;
 
         jsonReader.MyTableType.Keys.CopyTo(NameArray, 0);    //名前
         jsonReader.MyTableType.Values.CopyTo(TypeArray, 0);  //タイプ
