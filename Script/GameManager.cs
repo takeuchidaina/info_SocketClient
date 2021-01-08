@@ -6,7 +6,7 @@ using UnityEngine;
 public enum eClient
 {
     Connect,
-    Direct,
+    Edit,
     Add,
     Remove,
     None
@@ -41,10 +41,10 @@ public class GameManager : MonoBehaviour
         isChangeScene = true;
     }
 
-    //ダイレクト接続が押されたときの処理
-    public void Push_DirectButton()
+    //編集が押されたときの処理
+    public void Push_EditButton()
     {
-        clientState = eClient.Direct;
+        clientState = eClient.Edit;
         isChangeScene = true;
     }
 
