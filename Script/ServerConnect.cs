@@ -1,24 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //https://dobon.net/vb/dotnet/internet/tcpclientserver.html#section4 参考サイト
 
 public class ServerConnect : MonoBehaviour
 {
+    static string sendMsg = "";
+
+    public static string SendMsg
+    {
+        get { return sendMsg; }
+    }
+
     [SerializeField]
-    public string ipOrHost = "";//接続したいPCのIP
+    public string ipOrHost;//接続したいPCのIP
 
     // Start is called before the first frame update
     void Start()
     {
         ipOrHost = ServerList.SelectServer.ServerRoomIP;
+        //ipOrHost = SendButton.Get_IP;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        //Debug.Log(ipOrHost);
     }
 
     public int SendServer(string _sendMsg)
@@ -43,9 +52,12 @@ public class ServerConnect : MonoBehaviour
             System.Text.Encoding enc = System.Text.Encoding.UTF8;   //文字コード設定
             byte[] sendBytes = enc.GetBytes(_sendMsg + '\n');       //文字列をByte型配列に変換
 
-            ns.Write(sendBytes, 0, sendBytes.Length);   //送信            
-        //ログに入力内容を表示する
-            GameObject.Find("Text_Log").GetComponent<Log>().AddLog(_sendMsg);
+            ns.Write(sendBytes, 0, sendBytes.Length);   //送信   
+            if (SceneManager.GetActiveScene().name != "SettingsChangeScene")
+            {
+                //ログに入力内容を表示する
+                GameObject.Find("Text_Log").GetComponent<Log>().AddLog(_sendMsg);
+            }
             //データ受信
             byte[] resBytes = new byte[1024];
             int resSize = 0;
@@ -61,8 +73,14 @@ public class ServerConnect : MonoBehaviour
                                                 //読み取れるデータがあるか、データの最後が\nでないときは受信を続ける
             } while (ns.DataAvailable || resBytes[resSize - 1] != '\n');
             string resMsg = enc.GetString(ms.GetBuffer(), 0, (int)ms.Length);
-            //ログに入力内容を表示する
-            GameObject.Find("Text_Log").GetComponent<Log>().AddLog("受信：" + resMsg);
+
+            sendMsg = resMsg;
+
+            if (SceneManager.GetActiveScene().name != "SettingsChangeScene")
+            {
+                //ログに入力内容を表示する
+                GameObject.Find("Text_Log").GetComponent<Log>().AddLog("受信：" + resMsg);
+            }
             ns.Close();
             tcp.Close();    //閉じる
             return 0;
@@ -72,8 +90,8 @@ public class ServerConnect : MonoBehaviour
     }
     public int GetJson()
     {
-        //  string ipOrHost = SendButton.Get_IP;
-        string ipOrHost = "127.0.0.1";
+
+        //string ipOrHost = "127.0.0.1";
         int port = 2001;
 
         do
