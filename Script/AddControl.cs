@@ -44,11 +44,19 @@ public class AddControl : MonoBehaviour
         if (isPush == true && isMatch == false)
         {
             //サーバー数が最大ではない場合
-            if (ServerList.NowServerNum < ServerList.SERVER_NUM)
+            if (ServerList.NowServerNum < ServerList.SERVER_NUM &&
+                (SendButton.Get_IP != "" && SendButton.Get_Name != ""))
             {
                 //生成フラグをtrueに
                 isCreate = true;
                 SceneManager.LoadScene("RemoteClient");
+            }
+            else if(SendButton.Get_IP == "" || SendButton.Get_Name == "")
+            {
+                //オブジェクトを表示に
+                canvasCheck.SetActive(true);
+
+                warningMessage.text = "サーバー名またはIPが入力されてない為\n作成できませんでした";
             }
             else
             {
