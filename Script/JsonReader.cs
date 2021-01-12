@@ -83,22 +83,8 @@ public class JsonReader : MonoBehaviour
 
     private void Awake()
     {
-        if (SceneManager.GetActiveScene().name == "SettingsChangeScene")
-        {
-            if (GameObject.Find("LoadObject").GetComponent<ServerConnect>().SendServer(request) == 0)
-            {
-                Debug.Log("送信成功");
-
-                //Load関数を書き直してサーバーからもらった情報を格納する形にする
-                Load();
-
-                //Debug.Log("受信："+ServerConnect.SendMsg);
-            }
-            else
-            {
-                Debug.Log("送信失敗");
-            }
-        }
+       //Load関数を書き直してサーバーからもらった情報を格納する形にする
+        Load();
     }
 
     void Update()
@@ -403,7 +389,7 @@ public class JsonReader : MonoBehaviour
         var Bool = 0;
 
         //文字を見つける処理
-        var character = "!#$%&'()=~|`{+*}<>?-^@[;:],/QWERTYUIOPASDFGHJKLZXCVBNM_qwertyuiopasdfghjklzxcvbnm";
+        var character = "!#$%&'()=~|`{+*}<>?-^@[;:],/\\QWERTYUIOPASDFGHJKLZXCVBNM_qwertyuiopasdfghjklzxcvbnm";
 
         //characterの長さを取得してその分for文で回す
         for (int i = 0; i < character.Length; i++)
