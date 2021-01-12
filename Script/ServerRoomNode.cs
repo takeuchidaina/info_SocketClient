@@ -40,12 +40,7 @@ public class ServerRoomNode : MonoBehaviour
 
     private void Start()
     {
-        //テキスト名前をサーバーリストのものに変更
-        Text[] tests = this.GetComponentsInChildren<Text>();
-
-        tests[(int)TextType.Name].text = serverRoom.ServerRoomName;
-        tests[(int)TextType.IP].text = "IP : " + serverRoom.ServerRoomIP;
-        tests[(int)TextType.LastConnect].text = "最終接続日 : " + serverRoom.ServerRoomLastConnect;
+        Change_UI();
     }
 
     private void Update()
@@ -66,5 +61,15 @@ public class ServerRoomNode : MonoBehaviour
         //サーバーリストクラスへサーバールーム情報を送る
         GameObject serverList = GameObject.Find("ServerList");
         serverList.GetComponent<ServerList>().SelectServerRoom(serverRoom);
+    }
+
+    public void Change_UI()
+    {
+        //テキスト名前をサーバーリストのものに変更
+        Text[] tests = this.GetComponentsInChildren<Text>();
+
+        tests[(int)TextType.Name].text = serverRoom.ServerRoomName;
+        tests[(int)TextType.IP].text = "IP : " + serverRoom.ServerRoomIP;
+        tests[(int)TextType.LastConnect].text = "最終接続日 : " + serverRoom.ServerRoomLastConnect;
     }
 }

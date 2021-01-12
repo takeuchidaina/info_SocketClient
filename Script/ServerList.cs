@@ -22,16 +22,18 @@ public class ServerRoom
     [SerializeField]
     private string serverRoomLastConnect;   //サーバーの最終接続日
 
-    //サーバーの名前のゲッター
+    //サーバーの名前のゲッター・セッター
     public string ServerRoomName
     {
         get { return this.serverRoomName; }
+        set { this.serverRoomName = value; }
     }
 
-    //サーバーのIPのゲッター
+    //サーバーのIPのゲッター・セッター
     public string ServerRoomIP
     {
         get { return this.serverRoomIP; }
+        set { this.serverRoomIP = value; }
     }
 
     //サーバーの識別番号のゲッター
@@ -40,7 +42,7 @@ public class ServerRoom
         get { return this.serverRoomIdentNum; }
     }
 
-    //サーバーの最終接続日のゲッター
+    //サーバーの最終接続日のゲッター・セッター
     public string ServerRoomLastConnect
     {
         get { return this.serverRoomLastConnect; }
@@ -76,8 +78,9 @@ public class ServerList : MonoBehaviour
     private GameObject serverRoomPrefab;    //サーバールームObject
     [SerializeField]
     private List<ServerRoom> serverRoomList = new List<ServerRoom>();    //サーバーリスト
-    private static ServerRoom selectServerRoom = null;
-    public const int SERVER_NUM = 5;        //サーバーの数//選択されているサーバールーム
+    private static ServerRoom selectServerRoom = null;  //選択されているサーバールーム
+    private static ServerRoom editServerRoom = null;    //編集するためのサーバーを格納しておく
+    public const int SERVER_NUM = 5;        //サーバーの数
     private static int nowServerNum = 0;    //現在のサーバーの数
 
     private string filePath;                    //ファイルパス
@@ -163,6 +166,20 @@ public class ServerList : MonoBehaviour
             AddServerList(SendButton.Get_Name, SendButton.Get_IP);
         }
 
+        //ClientStateがEdit かつ シーンが切り替わってない場合
+        if (GameManager.ClientState == eClient.Edit && GameManager.IsChangeScene == false)
+        {
+            GameManager.ClientState = eClient.None;
+
+            //キャンセルボタンが押されていた場合処理をおこなわない
+            if (CancelButton.CancelFlg == true)
+            {
+                return;
+            }
+
+            EditServerList(SendButton.Get_Name, SendButton.Get_IP);
+        }
+
         Debug.Log("IsCreate : "+AddControl.IsCreate);
     }
 
@@ -227,6 +244,31 @@ public class ServerList : MonoBehaviour
         nowServerNum = serverRoomList.Count;
     }
 
+    private void EditServerList(string _name, string _IP)
+    {
+        //サーバールームを取得
+        GameObject node = GameObject.Find(editServerRoom.ServerRoomName +
+            editServerRoom.ServerRoomIdentNum);
+
+        //オブジェクトの名前を新しいサーバーの名前＋識別番号に変更
+        node.name = _name + editServerRoom.ServerRoomIdentNum;
+
+        //ServerRoomNodeを取得
+        ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
+
+        //IPを変更する
+        serverRoomNode.ServerRoom.ServerRoomIP = _IP;
+
+        //名前を変更する
+        serverRoomNode.ServerRoom.ServerRoomName = _name;
+
+        //表示内容を切り替える
+        serverRoomNode.Change_UI();
+
+        //編集するサーバーをクリアする
+        editServerRoom = null;
+    }
+
     //選択されたサーバールームを削除する処理
     public void RemoveServerList()
     {
@@ -264,6 +306,12 @@ public class ServerList : MonoBehaviour
         }
 
         selectServerRoom = _serverRoom;
+    }
+
+    //編集するサーバールームを選択する
+    public void SelectEditServer()
+    {
+        editServerRoom = selectServerRoom;
     }
 
     void SceneLoaded(Scene nextScene,LoadSceneMode mode)
