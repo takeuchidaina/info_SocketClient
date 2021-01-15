@@ -29,6 +29,7 @@ public class scr_Slider_int : MonoBehaviour
     public string TextValue
     {
         get { return inputObj.text; }
+        set { inputObj.text = value; }
     }
 
     public void OnValueChanged()

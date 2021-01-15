@@ -54,8 +54,9 @@ public class scr_Input_S : MonoBehaviour
 
     public string TextValue
     {
-        //ゲッター
+        //ゲッターセッター
         get { return this.inputValue; }
+        set { inputValue = value; }
     }
 
     void InitInputField()

@@ -28,6 +28,7 @@ public class scr_DropDown : MonoBehaviour
     public string TextValue
     {
         get { return label; }
+        set { label = value; }
     }
 
     public void OnValueChanged()
