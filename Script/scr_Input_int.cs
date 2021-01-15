@@ -64,4 +64,15 @@ public class scr_Input_int : MonoBehaviour
         //inputField_S.ActivateInputField();
         // フォーカス
     }
+    public void OnValueChanged()
+    {
+        inputValue = inputField.text;
+        value = int.Parse(inputValue);    //範囲外か確認するため一度intに変換
+        if (value < 0) value = 0;           //0未満の時は0に固定
+        else if (100 < value) value = 100;  //上限値を超えていたら上限値に設定
+
+        inputValue = value.ToString();  //ここで代入
+
+        slider.value = value;
+    }
 }
