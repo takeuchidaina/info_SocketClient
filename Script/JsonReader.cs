@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.IO;
 using System.Linq;
-using System.Threading;
-using UnityEngine.SceneManagement;
 //2020/1/8
 //サーバーから情報をもらって連想配列を作成します
 
@@ -60,6 +57,7 @@ public class JsonReader : MonoBehaviour
 
     //jsonを入れる用のクラス
     public InputJson inputJson;
+
     List<string> nameList = new List<string>();
     List<string> contentsList = new List<string>();
 
@@ -67,19 +65,22 @@ public class JsonReader : MonoBehaviour
     public List<string> NameList
     {
         get { return nameList; }
+        set { nameList = value; }
     }
 
     //テキストから読み取ったやつ(中身)を配列にまとめたやつを取得出来ます
     public List<string> ContentsList
     {
         get { return contentsList; }
+        set { contentsList = value; }
     }
+
+    //元として保存する用
+    List<string> copyNameList = new List<string>();
+    List<string> copyContentsList = new List<string>();
 
     //テキストの加工前の一行を入れる変数
     private string[] textMessage;
-
-    //情報をもらうためのリクエスト文章
-    private string request = "/Setting";
 
     private void Awake()
     {
@@ -281,6 +282,9 @@ public class JsonReader : MonoBehaviour
 
         //要素数を代入
         myTableCnt = myTable.Count;
+
+        copyNameList = NameList;
+        copyContentsList = ContentsList;
 
         //使わなくなった処理です
         {
@@ -508,5 +512,16 @@ public class JsonReader : MonoBehaviour
                     break;
             }
         }        
+    }
+
+    public void ResetData()
+    {
+        myTable = new Dictionary<string, string>();
+        myTableType = new Dictionary<string, Type>();
+
+        nameList = new List<string>();
+        contentsList = new List<string>();
+        myTableCnt = 0;
+        Load();
     }
 }
