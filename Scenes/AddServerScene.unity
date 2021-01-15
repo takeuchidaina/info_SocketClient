@@ -339,7 +339,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 4
@@ -408,7 +408,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 4
@@ -1227,8 +1227,8 @@ MonoBehaviour:
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
   m_Text: 
-  m_CaretBlinkRate: 0.85
-  m_CaretWidth: 1
+  m_CaretBlinkRate: 1
+  m_CaretWidth: 3
   m_ReadOnly: 0
 --- !u!114 &1216035699
 MonoBehaviour:
@@ -1254,10 +1254,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1216035694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6dca54f136a76b44b998b59027ef615, type: 3}
+  m_Script: {fileID: 11500000, guid: d50d31cb59ae8d842a5d7a1bd9bd0cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inPut: {fileID: 1216035698}
+  inputField: {fileID: 1216035698}
 --- !u!1 &1333887363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1930,8 +1930,8 @@ MonoBehaviour:
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
   m_Text: 
-  m_CaretBlinkRate: 0.85
-  m_CaretWidth: 1
+  m_CaretBlinkRate: 1
+  m_CaretWidth: 3
   m_ReadOnly: 0
 --- !u!224 &1842446491
 RectTransform:
@@ -2015,10 +2015,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1842446489}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6dca54f136a76b44b998b59027ef615, type: 3}
+  m_Script: {fileID: 11500000, guid: d50d31cb59ae8d842a5d7a1bd9bd0cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inPut: {fileID: 1842446490}
+  inputField: {fileID: 1842446490}
 --- !u!1 &1943948727
 GameObject:
   m_ObjectHideFlags: 0
