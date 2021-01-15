@@ -18,6 +18,9 @@ public class DeleteCheckButton : MonoBehaviour
 
     public void CheckDisplay()
     {
+        //サーバーが選択されていないとき処理を中断する
+        if (ServerList.SelectServer == null) return;
+
         GameObject obj = transform.Find("Canvas_Delete").gameObject;    //オブジェクトを格納
         obj.SetActive(true);                                              //オブジェクトのアクティブ可
     }
