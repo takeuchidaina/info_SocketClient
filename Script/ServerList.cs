@@ -99,7 +99,7 @@ public class ServerList : MonoBehaviour
         Instance = this;
 
         //ファイルパスを取得
-        filePath = Application.dataPath + "/" + fileName;
+        filePath = Application.persistentDataPath + "/" + fileName;
 
         //オブジェクトを取得
         content = GameObject.Find("Content");
