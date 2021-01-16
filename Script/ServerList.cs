@@ -134,48 +134,6 @@ public class ServerList : MonoBehaviour
         }
     }
 
-    //毎フレーム呼ばれる処理
-    private void Update()
-    {
-        ////ClientStateがConnectの場合
-        //if (GameManager.ClientState == eClient.Connect)
-        //{
-        //    GameManager.ClientState = eClient.None;
-
-        //    ConnectServerList();
-        //}
-
-        ////ClientStateがAdd かつ シーンが切り替わってない場合
-        //if(GameManager.ClientState == eClient.Add  && GameManager.IsChangeScene == false)
-        //{
-        //    GameManager.ClientState = eClient.None;
-
-        //    //キャンセルボタンが押されていた場合処理をおこなわない
-        //    if (CancelButton.CancelFlg == true)
-        //    {
-        //        return;
-        //    }
-
-        //    AddServerList(SendButton.Get_Name, SendButton.Get_IP);
-        //}
-
-        ////ClientStateがEdit かつ シーンが切り替わってない場合
-        //if (GameManager.ClientState == eClient.Edit && GameManager.IsChangeScene == false)
-        //{
-        //    GameManager.ClientState = eClient.None;
-
-        //    //キャンセルボタンが押されていた場合処理をおこなわない
-        //    if (CancelButton.CancelFlg == true)
-        //    {
-        //        return;
-        //    }
-
-        //    EditServerList(SendButton.Get_Name, SendButton.Get_IP);
-        //}
-
-        //Debug.Log("IsCreate : "+AddControl.IsCreate);
-    }
-
     //オブジェクトが破棄される際に呼ばれる処理
     private void OnDestroy()
     {
