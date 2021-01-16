@@ -9,6 +9,13 @@ public class scr_Slider : MonoBehaviour
     string name;
     InputField inputObj;    //同期しているInputオブジェクト
 
+
+    public string TextValue
+    {
+        get { return inputObj.text; }
+        set { inputObj.text = value; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,12 +29,6 @@ public class scr_Slider : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public string TextValue
-    {
-        get { return inputObj.text; }
-        set { inputObj.text = value; }
     }
 
     public void OnValueChanged()

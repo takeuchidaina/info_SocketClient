@@ -11,6 +11,13 @@ public class scr_DropDown : MonoBehaviour
     string label;
     bool flg = false;
     // Start is called before the first frame update
+
+    public string TextValue
+    {
+        get { return label; }
+        set { label = value; }
+    }
+
     void Start()
     {   //初期化
         dropDown = GetComponent<Dropdown>();
@@ -23,12 +30,6 @@ public class scr_DropDown : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public string TextValue
-    {
-        get { return label; }
-        set { label = value; }
     }
 
     public void OnValueChanged()
