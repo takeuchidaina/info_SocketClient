@@ -82,7 +82,6 @@ public class ServerList : MonoBehaviour
     [SerializeField]
     private List<ServerRoom> serverRoomList = new List<ServerRoom>();    //サーバーリスト
     private static ServerRoom selectServerRoom = null;  //選択されているサーバールーム
-    private static ServerRoom editServerRoom = null;    //編集するためのサーバーを格納しておく
     public const int SERVER_NUM = 5;        //サーバーの数
 
     private string filePath;                    //ファイルパス
@@ -239,6 +238,7 @@ public class ServerList : MonoBehaviour
         return false;
     }
 
+    //サーバー数が最大かの判定処理
     public bool CheckMaxServerNum()
     {
         //サーバーの数が最大の場合
@@ -251,60 +251,17 @@ public class ServerList : MonoBehaviour
         return false;
     }
 
-
-
-    //サーバーリストにサーバールームを新規追加する処理
-    //public void AddServerList(string _name, string _IP)
-    //{
-    //    //生成フラグをfalseの場合生成を行わない
-    //    if(AddControl.IsCreate == false)
-    //    {
-    //        return;
-    //    }
-
-    //    //サーバーリストにサーバールームを新規追加
-    //    serverRoomList.Add(new ServerRoom(_name, _IP));
-
-    //    //サーバールームをオブジェクトとして生成
-    //    GameObject node = Instantiate(serverRoomPrefab, content.transform) as GameObject;
-
-    //    //オブジェクトの名前をサーバーの名＋識別番号に変更
-    //    node.name = serverRoomList[serverRoomList.Count - 1].ServerRoomName +
-    //        serverRoomList[serverRoomList.Count - 1].ServerRoomIdentNum;
-
-    //    //ServerRoomNodeを取得
-    //    ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
-
-    //    //追加したサーバーを取得したサーバールームに適用
-    //    serverRoomNode.ServerRoom = serverRoomList[serverRoomList.Count - 1];
-
-    //    //サーバーの数を適用
-    //    nowServerNum = serverRoomList.Count;
-    //}
-
-    private void EditServerList(string _name, string _IP)
+    public void EditServer(string _name, string _IP)
     {
-        //サーバールームを取得
-        GameObject node = GameObject.Find(editServerRoom.ServerRoomName +
-            editServerRoom.ServerRoomIdentNum);
+        //選択されているサーバールームの格納場所を取得する
+        int serverRoomNum = serverRoomList.IndexOf(selectServerRoom);
 
-        //オブジェクトの名前を新しいサーバーの名前＋識別番号に変更
-        node.name = _name + editServerRoom.ServerRoomIdentNum;
+        //書き換える
+        serverRoomList[serverRoomNum].ServerRoomName = _name;
+        serverRoomList[serverRoomNum].ServerRoomIP = _IP;
 
-        //ServerRoomNodeを取得
-        ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
-
-        //IPを変更する
-        serverRoomNode.ServerRoom.ServerRoomIP = _IP;
-
-        //名前を変更する
-        serverRoomNode.ServerRoom.ServerRoomName = _name;
-
-        //表示内容を切り替える
-        serverRoomNode.Change_UI();
-
-        //編集するサーバーをクリアする
-        editServerRoom = null;
+        //追加したサーバーをファイルへ書き込む
+        ListWrirer();
     }
 
     //選択されたサーバールームを削除する処理
@@ -341,11 +298,5 @@ public class ServerList : MonoBehaviour
         }
 
         selectServerRoom = _serverRoom;
-    }
-
-    //編集するサーバールームを選択する
-    public void SelectEditServer()
-    {
-        editServerRoom = selectServerRoom;
     }
 }

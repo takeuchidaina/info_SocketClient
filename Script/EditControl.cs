@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class AddControl : MonoBehaviour
+public class EditControl : MonoBehaviour
 {
     [SerializeField]
     private GameObject canvasCheck; //生成不可通知パネル
@@ -27,31 +27,17 @@ public class AddControl : MonoBehaviour
         canvasCheck.SetActive(false);
     }
 
-    public void AddButton()
+    public void EditButton()
     {
-        //新規サーバーの名前が存在する場合の処理
-        if (ServerList.Instance.CheckHitName(serverName.text))
-        {
-            ErrorProc("既存のサーバー名が存在するため\n生成できませんでした");
-            return;
-        }
-
-        //サーバー数が最大の場合の処理
-        if (ServerList.Instance.CheckMaxServerNum())
-        {
-            ErrorProc("サーバー数が最大なため\n作成できませんでした");
-            return;
-        }
 
         //サーバー名またはIPが入力されていない場合の処理
         if (serverName.text == "" || serverIP.text == "")
         {
-            ErrorProc("サーバー名またはIPが入力されてない為\n作成できませんでした");
+            ErrorProc("サーバー名またはIPが入力されてない為\n保存できませんでした");
             return;
         }
 
-        //サーバーを追加する
-        ServerList.Instance.AddServer(serverName.text, serverIP.text);
+        ServerList.Instance.EditServer(serverName.text, serverIP.text);
 
         //サーバーリスト画面へ戻る
         SceneManager.LoadScene("RemoteClient");
