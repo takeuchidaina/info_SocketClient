@@ -10,6 +10,13 @@ public class scr_Input : MonoBehaviour
     InputField inputField;
     string inputValue;
 
+    public string TextValue
+    {
+        //ゲッターセッター
+        get { return this.inputValue; }
+        set { inputValue = value; }
+    }
+
     void Start()
     {
         inputField = GetComponent<InputField>();
@@ -24,13 +31,6 @@ public class scr_Input : MonoBehaviour
         //Debug.Log("obj_Input_L :" + inputValue);
         //ログ表示
         InitInputField();
-    }
-
-    public string TextValue
-    {
-        //ゲッターセッター
-        get{ return this.inputValue; }
-        set { inputValue = value; }
     }
 
     void InitInputField()

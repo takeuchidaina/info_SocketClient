@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UICreate : MonoBehaviour
 {
-
+    #region 変数宣言
     /*プレハブ格納用*/
     private GameObject srider;
     private GameObject srider_int;
@@ -43,6 +43,7 @@ public class UICreate : MonoBehaviour
     Vector2 dropS_Pos =  new Vector2(260.0f, -140.0f);          //ドロップダウン(short)
     Vector2 space = new Vector2(0.0f, 230.0f);                  //間隔
 
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
@@ -69,7 +70,8 @@ public class UICreate : MonoBehaviour
 
     void CreateInit()
     {
-        //初期化(変更があった場合生成しなおす)
+        #region 初期化処理
+        //初期化
         JsonReader jsonReader = GameObject.Find("LoadObject").GetComponent<JsonReader>();
 
         instances = new GameObject[jsonReader.MyTableCnt];                   //配列初期化
@@ -105,8 +107,11 @@ public class UICreate : MonoBehaviour
         slidertextPos += half;
         dropS_Pos += half;
 
+        #endregion
+
         for (int i = 0; i < jsonReader.MyTableCnt; i++)//生成する数だけ繰り返す
         {
+            #region 生成処理
 
             switch (TypeArray[i].type)
             {
@@ -200,10 +205,11 @@ public class UICreate : MonoBehaviour
                 default:
                     break;
             }
+            #endregion
         }
     }
 
-
+    #region テスト用
     // プレハブを元にオブジェクトを生成する(テスト用)
     //GameObject instance = (GameObject)Instantiate(text, basisPos,Quaternion.identity);
 
@@ -275,5 +281,5 @@ public class UICreate : MonoBehaviour
     inputs[3] = instances[3].GetComponent<InputField>();
     inputs[3].text = "test input";
     */
-
+    #endregion
 }

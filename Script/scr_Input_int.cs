@@ -11,6 +11,14 @@ public class scr_Input_int : MonoBehaviour
     string sliderName;  //同期しているスライダーの名前
     string inputValue;  //入力された値
     int value;          //整数
+    const int MAX_VALUE = 300;
+
+    public string TextValue
+    {
+        //ゲッターセッター
+        get { return this.inputValue; }
+        set { inputValue = value; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -20,40 +28,21 @@ public class scr_Input_int : MonoBehaviour
         sliderName = name.Replace("InputObj", "");  //余計なもの削除
         slider = GameObject.Find(sliderName).GetComponent<Slider>();
 
-        inputValue = inputField.text;
+        ValCheck();
 
-        value = int.Parse(inputValue);      //範囲外か確認するため一度intに変換
-        if (value < 0) value = 0;           //0未満の時は0に固定
-        else if (100 < value) value = 100;  //上限値を超えていたら上限値に設定
-
-        inputValue = value.ToString();      //ここで代入
         inputField.text = inputValue;
-        slider.value = value;               //スライダーの値を変更
     }
 
     public void InputLogger()
     {
 
-        inputValue = inputField.text;
-        value = int.Parse(inputValue);    //範囲外か確認するため一度intに変換
-        if (value < 0) value = 0;           //0未満の時は0に固定
-        else if (100 < value) value = 100;  //上限値を超えていたら上限値に設定
-
-        inputValue = value.ToString();  //ここで代入
-
-        slider.value = value;
+        ValCheck();
 
         //Debug.Log("obj_Input_S :" + inputValue);
         //ログ表示
         InitInputField();
     }
 
-    public string TextValue
-    {
-        //ゲッターセッター
-        get { return this.inputValue; }
-        set { inputValue = value; }
-    }
     void InitInputField()
     {
         inputField.text = "";
@@ -66,10 +55,14 @@ public class scr_Input_int : MonoBehaviour
     }
     public void OnValueChanged()
     {
-        inputValue = inputField.text;
-        value = int.Parse(inputValue);    //範囲外か確認するため一度intに変換
+        ValCheck();
+    }
+    void ValCheck()
+    {
+        inputValue = inputField.text;     
+        value = int.Parse(inputValue);      //範囲外か確認するため一度intに変換
         if (value < 0) value = 0;           //0未満の時は0に固定
-        else if (100 < value) value = 100;  //上限値を超えていたら上限値に設定
+        else if (MAX_VALUE < value) value = MAX_VALUE;  //上限値を超えていたら上限値に設定
 
         inputValue = value.ToString();  //ここで代入
 
