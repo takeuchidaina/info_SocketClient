@@ -8,21 +8,15 @@ public class AddControl : MonoBehaviour
 {
     [SerializeField]
     private GameObject canvasCheck; //生成不可通知パネル
-    private bool isPush;            //押されフラグ
-    private bool isMatch;           //サーバー名一致フラグ
-    private static bool isCreate;   //サーバー生成フラグ
-
-    private List<ServerRoom> serverRoomList;    //サーバーリスト
 
     [SerializeField]
     private Text warningMessage;    //警告メッセージ
-    
-    //サーバー作成フラグのゲッター
-    public static bool IsCreate
-    {
-        get { return isCreate; }
-    }
-    
+
+    [SerializeField]
+    private InputField serverName;  //サーバーの名前
+
+    [SerializeField]
+    private InputField ServerIP;    //サーバーIP
 
     private void Start()
     {
@@ -31,91 +25,51 @@ public class AddControl : MonoBehaviour
 
         //オブジェクトを非表示に
         canvasCheck.SetActive(false);
-
-        //初期化
-        isPush = false;
-        isMatch = false;
-        isCreate = false;
     }
 
-    private void Update()
+    public void AddButton()
     {
-        //ボタンが押され、サーバー名が不一致の場合
-        if (isPush == true && isMatch == false)
+        //新規サーバーの名前が存在する場合の処理
+        if (ServerList.Instance.CheckHitName(serverName.text))
         {
-            //サーバー数が最大ではない場合
-            if (ServerList.NowServerNum < ServerList.SERVER_NUM &&
-                (SendButton.Get_IP != "" && SendButton.Get_Name != ""))
-            {
-                //生成フラグをtrueに
-                isCreate = true;
-                SceneManager.LoadScene("RemoteClient");
-            }
-            else if(SendButton.Get_IP == "" || SendButton.Get_Name == "")
-            {
-                //オブジェクトを表示に
-                canvasCheck.SetActive(true);
-
-                warningMessage.text = "サーバー名またはIPが入力されてない為\n作成できませんでした";
-            }
-            else
-            {
-                //オブジェクトを表示に
-                canvasCheck.SetActive(true);
-
-                warningMessage.text = "サーバー数が最大なため\n作成できませんでした";
-            }
+            ErrorProc("既存のサーバー名が存在するため\n生成できませんでした");
+            return;
         }
-        else if(isPush == true && isMatch == true)
+
+        //サーバー数が最大の場合の処理
+        if (ServerList.Instance.CheckMaxServerNum())
         {
-            //オブジェクトを表示に
-            canvasCheck.SetActive(true);
-
-            warningMessage.text = "既存のサーバー名が存在するため\n生成できませんでした";
+            ErrorProc("サーバー数が最大なため\n作成できませんでした");
+            return;
         }
+
+        //サーバー名またはIPが入力されていない場合の処理
+        if (serverName.text == "" || ServerIP.text == "")
+        {
+            ErrorProc("サーバー名またはIPが入力されてない為\n作成できませんでした");
+            return;
+        }
+
+        //サーバーを追加する
+        ServerList.Instance.AddServer(serverName.text, ServerIP.text);
+
+        //サーバーリスト画面へ戻る
+        SceneManager.LoadScene("RemoteClient");
     }
 
-    public void CheckPush()
+    //エラーの際の処理
+    private void ErrorProc(string _warningMessage)
+    {
+        //オブジェクトを表示に
+        canvasCheck.SetActive(true);
+
+        //メッセージを設定する
+        warningMessage.text = _warningMessage;
+    }
+
+    public void OKButton()
     {
         //オブジェクトを非表示に
         canvasCheck.SetActive(false);
-
-        //押されフラグをfalseに
-        isPush = false;
-
-        //サーバー名一致フラグがtrueの場合falseに
-        if(isMatch == true)
-        {
-            isMatch = false;
-        }
-    }
-
-    public void AddPush()
-    {
-        //isPushがfalseの場合true切り替える
-        if(isPush == false)
-        {
-            isPush = true;
-            CheckCreateServer();
-        }
-    }
-
-    private void CheckCreateServer()
-    {
-        //作成予定の名前を現在のサーバーリストと比較し一致してるか判定を行う
-        foreach (var serverRoom in serverRoomList)
-        {
-            if (serverRoom.ServerRoomName == SendButton.Get_Name)
-            {
-                isMatch = true;
-                return;
-            }
-        }
-    }
-
-    public void GetServerList(List<ServerRoom> _serverList)
-    {
-        //ServerList classから受け取った情報を格納する
-        serverRoomList = _serverList;
     }
 }

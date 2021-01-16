@@ -3,62 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //クライアント側の状態
-public enum eClient
+public enum ClientState
 {
-    Connect,
-    Edit,
-    Add,
-    Remove,
-    None
+    Connect,    //接続
+    Edit,       //編集
+    Add,        //追加
+    Remove,     //削除
+    Wait        //待機
 }
 
 public class GameManager : MonoBehaviour
 {
-    private static eClient clientState = eClient.None;  //状態管理用変数
-    private static bool isChangeScene = false;          //シーン切り替えしてるかどうか
+    public static GameManager Instance; //インスタンス
 
-    //状態管理用変数のゲッター、セッター
-    public static eClient ClientState
+    private ClientState clientState = ClientState.Wait;    //クライアントの現在の状態
+
+    private void Awake()
     {
-        get { return clientState; }
-        set { clientState = value; }
+        Instance = this;
     }
 
-    public static bool IsChangeScene
+    //クライアントの状態を取得する
+    public ClientState GetClientState()
     {
-        get { return isChangeScene; }
+        return clientState;
     }
-
-    private void Start()
-    {
-        isChangeScene = false;
-    }
-
-    //接続ボタンが押されたときの処理
-    public void Push_ConnectButton()
-    {
-        clientState = eClient.Connect;
-        isChangeScene = true;
-    }
-
-    //編集が押されたときの処理
-    public void Push_EditButton()
-    {
-        clientState = eClient.Edit;
-        isChangeScene = true;
-    }
-
-    //サーバー追加が押されたときの処理
-    public void Push_AddButton()
-    {
-        clientState = eClient.Add;
-        isChangeScene = true;
-    }
-
-    //削除が押されたときの処理
-    public void Push_RemoveButton()
-    {
-        clientState = eClient.Remove;
-    }
-
 }

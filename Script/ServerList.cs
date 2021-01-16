@@ -50,7 +50,7 @@ public class ServerRoom
     }
 
     //初期生成用のコンストラクタ
-    public ServerRoom(string _name,string _IP)
+    public ServerRoom(string _name, string _IP)
     {
         DateTime dt = DateTime.Now;
 
@@ -74,6 +74,9 @@ public class ServerRoom
 
 public class ServerList : MonoBehaviour
 {
+
+    public static ServerList Instance;  //インスタンス
+
     private GameObject content;     //サーバールームを格納する場所
     private GameObject serverRoomPrefab;    //サーバールームObject
     [SerializeField]
@@ -81,7 +84,6 @@ public class ServerList : MonoBehaviour
     private static ServerRoom selectServerRoom = null;  //選択されているサーバールーム
     private static ServerRoom editServerRoom = null;    //編集するためのサーバーを格納しておく
     public const int SERVER_NUM = 5;        //サーバーの数
-    private static int nowServerNum = 0;    //現在のサーバーの数
 
     private string filePath;                    //ファイルパス
     private string fileName = "ServerList.txt"; //ファイル名
@@ -92,15 +94,11 @@ public class ServerList : MonoBehaviour
         get { return selectServerRoom; }
     }
 
-    //現在のサーバーの数のゲッター
-    public static int NowServerNum
-    {
-        get { return nowServerNum; }
-    }
-
     //オブジェクト生成する際に行う処理
     private void Awake()
     {
+        Instance = this;
+
         //ファイルパスを取得
         filePath = Application.dataPath + "/" + fileName;
 
@@ -109,7 +107,7 @@ public class ServerList : MonoBehaviour
         serverRoomPrefab = (GameObject)Resources.Load("ServerRoomNode");
 
         //ファイル読み込み(現在テキストファイルでcsvみたいな方法で管理している)
-        using(StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8))
+        using (StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8))
         {
             while (!streamReader.EndOfStream)
             {
@@ -119,11 +117,9 @@ public class ServerList : MonoBehaviour
             }
         }
 
-        //サーバーの数を初期化
-        nowServerNum = serverRoomList.Count;
-
         //選択情報をリセット
         selectServerRoom = null;
+
     }
 
     //オブジェクト生成後行う処理
@@ -137,56 +133,58 @@ public class ServerList : MonoBehaviour
             ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
             serverRoomNode.ServerRoom = serverRoom;
         }
-
-        SceneManager.sceneLoaded += SceneLoaded;
     }
 
     //毎フレーム呼ばれる処理
     private void Update()
     {
-        //ClientStateがConnectの場合
-        if (GameManager.ClientState == eClient.Connect)
-        {
-            GameManager.ClientState = eClient.None;
+        ////ClientStateがConnectの場合
+        //if (GameManager.ClientState == eClient.Connect)
+        //{
+        //    GameManager.ClientState = eClient.None;
 
-            ConnectServerList();
-        }
+        //    ConnectServerList();
+        //}
 
-        //ClientStateがAdd かつ シーンが切り替わってない場合
-        if(GameManager.ClientState == eClient.Add  && GameManager.IsChangeScene == false)
-        {
-            GameManager.ClientState = eClient.None;
+        ////ClientStateがAdd かつ シーンが切り替わってない場合
+        //if(GameManager.ClientState == eClient.Add  && GameManager.IsChangeScene == false)
+        //{
+        //    GameManager.ClientState = eClient.None;
 
-            //キャンセルボタンが押されていた場合処理をおこなわない
-            if (CancelButton.CancelFlg == true)
-            {
-                return;
-            }
+        //    //キャンセルボタンが押されていた場合処理をおこなわない
+        //    if (CancelButton.CancelFlg == true)
+        //    {
+        //        return;
+        //    }
 
-            AddServerList(SendButton.Get_Name, SendButton.Get_IP);
-        }
+        //    AddServerList(SendButton.Get_Name, SendButton.Get_IP);
+        //}
 
-        //ClientStateがEdit かつ シーンが切り替わってない場合
-        if (GameManager.ClientState == eClient.Edit && GameManager.IsChangeScene == false)
-        {
-            GameManager.ClientState = eClient.None;
+        ////ClientStateがEdit かつ シーンが切り替わってない場合
+        //if (GameManager.ClientState == eClient.Edit && GameManager.IsChangeScene == false)
+        //{
+        //    GameManager.ClientState = eClient.None;
 
-            //キャンセルボタンが押されていた場合処理をおこなわない
-            if (CancelButton.CancelFlg == true)
-            {
-                return;
-            }
+        //    //キャンセルボタンが押されていた場合処理をおこなわない
+        //    if (CancelButton.CancelFlg == true)
+        //    {
+        //        return;
+        //    }
 
-            EditServerList(SendButton.Get_Name, SendButton.Get_IP);
-        }
+        //    EditServerList(SendButton.Get_Name, SendButton.Get_IP);
+        //}
 
-        Debug.Log("IsCreate : "+AddControl.IsCreate);
+        //Debug.Log("IsCreate : "+AddControl.IsCreate);
     }
 
     //オブジェクトが破棄される際に呼ばれる処理
     private void OnDestroy()
     {
+        ListWrirer();
+    }
 
+    private void ListWrirer()
+    {
         //ファイル書き込み(現在テキストファイルでcsvみたいな方法で管理している)
         using (StreamWriter fileWrirer = new StreamWriter(filePath, false))
         {
@@ -204,7 +202,7 @@ public class ServerList : MonoBehaviour
     {
         DateTime dt = DateTime.Now;
 
-        if(selectServerRoom == null)
+        if (selectServerRoom == null)
         {
             return;
         }
@@ -215,34 +213,74 @@ public class ServerList : MonoBehaviour
             dt.Hour.ToString() + ":" + dt.Minute.ToString();
     }
 
-    //サーバーリストにサーバールームを新規追加する処理
-    public void AddServerList(string _name, string _IP)
+    //サーバーを追加する処理
+    public void AddServer(string _name, string _IP)
     {
-        //生成フラグをfalseの場合生成を行わない
-        if(AddControl.IsCreate == false)
-        {
-            return;
-        }
-
         //サーバーリストにサーバールームを新規追加
         serverRoomList.Add(new ServerRoom(_name, _IP));
 
-        //サーバールームをオブジェクトとして生成
-        GameObject node = Instantiate(serverRoomPrefab, content.transform) as GameObject;
-
-        //オブジェクトの名前をサーバーの名＋識別番号に変更
-        node.name = serverRoomList[serverRoomList.Count - 1].ServerRoomName +
-            serverRoomList[serverRoomList.Count - 1].ServerRoomIdentNum;
-
-        //ServerRoomNodeを取得
-        ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
-
-        //追加したサーバーを取得したサーバールームに適用
-        serverRoomNode.ServerRoom = serverRoomList[serverRoomList.Count - 1];
-
-        //サーバーの数を適用
-        nowServerNum = serverRoomList.Count;
+        //追加したサーバーをファイルへ書き込む
+        ListWrirer();
     }
+
+    //名前が一致するサーバーが存在するかの判定処理
+    public bool CheckHitName(string _name)
+    {
+        foreach(var serverRoom in serverRoomList)
+        {
+            //一致するサーバーがあった場合
+            if(serverRoom.ServerRoomName == _name)
+            {
+                return true;
+            }
+        }
+
+        //一致するサーバーがなかった場合
+        return false;
+    }
+
+    public bool CheckMaxServerNum()
+    {
+        //サーバーの数が最大の場合
+        if(serverRoomList.Count >= SERVER_NUM)
+        {
+            return true;
+        }
+
+        //サーバーの数が最大ではない場合
+        return false;
+    }
+
+
+
+    //サーバーリストにサーバールームを新規追加する処理
+    //public void AddServerList(string _name, string _IP)
+    //{
+    //    //生成フラグをfalseの場合生成を行わない
+    //    if(AddControl.IsCreate == false)
+    //    {
+    //        return;
+    //    }
+
+    //    //サーバーリストにサーバールームを新規追加
+    //    serverRoomList.Add(new ServerRoom(_name, _IP));
+
+    //    //サーバールームをオブジェクトとして生成
+    //    GameObject node = Instantiate(serverRoomPrefab, content.transform) as GameObject;
+
+    //    //オブジェクトの名前をサーバーの名＋識別番号に変更
+    //    node.name = serverRoomList[serverRoomList.Count - 1].ServerRoomName +
+    //        serverRoomList[serverRoomList.Count - 1].ServerRoomIdentNum;
+
+    //    //ServerRoomNodeを取得
+    //    ServerRoomNode serverRoomNode = node.GetComponent<ServerRoomNode>();
+
+    //    //追加したサーバーを取得したサーバールームに適用
+    //    serverRoomNode.ServerRoom = serverRoomList[serverRoomList.Count - 1];
+
+    //    //サーバーの数を適用
+    //    nowServerNum = serverRoomList.Count;
+    //}
 
     private void EditServerList(string _name, string _IP)
     {
@@ -287,9 +325,6 @@ public class ServerList : MonoBehaviour
 
         //選択状態を解除する
         selectServerRoom = null;
-
-        //サーバーの数を適用
-        nowServerNum = serverRoomList.Count;
     }
 
     //サーバールームの選択処理
@@ -312,18 +347,5 @@ public class ServerList : MonoBehaviour
     public void SelectEditServer()
     {
         editServerRoom = selectServerRoom;
-    }
-
-    void SceneLoaded(Scene nextScene,LoadSceneMode mode)
-    {
-        //次のシーンがAddServerSceneの場合
-        if(nextScene.name == "AddServerScene")
-        {
-            //AddControlにServerListを渡す
-            AddControl addControl = GameObject.Find("AddControl").GetComponent<AddControl>();
-            addControl.GetServerList(serverRoomList);
-        }
-
-        SceneManager.sceneLoaded -= SceneLoaded;
     }
 }
