@@ -2,7 +2,7 @@
 using UnityEngine;
 using System;
 using System.Linq;
-//2020/1/8
+//2020/1/17
 //サーバーから情報をもらって連想配列を作成します
 
 //どの型にするか判別するのに使うenum形
@@ -17,9 +17,9 @@ public enum eType
 //サーバーから読み取ったものを入れ込む用のクラス
 public class InputJson
 {
-     //配列にも対応
-      public string[] nameList = new string[] { };
-      public string[] contentsList = new string[] { };
+    //配列にも対応
+    public string[] nameList = new string[] { };
+    public string[] contentsList = new string[] { };
 }
 
 //Values + どの型なのかを判別したやつを入れるクラス
@@ -31,6 +31,7 @@ public class Type
 
 public class JsonReader : MonoBehaviour
 {
+    string test;
     Dictionary<string, string> myTable = new Dictionary<string, string>();
 
     //読み込んだデータをKeyとValuesに入れ込んで登録
@@ -84,8 +85,9 @@ public class JsonReader : MonoBehaviour
 
     private void Awake()
     {
-       //Load関数を書き直してサーバーからもらった情報を格納する形にする
+        //Load関数を書き直してサーバーからもらった情報を格納する形にする
         Load();
+
     }
 
     void Update()
@@ -104,7 +106,7 @@ public class JsonReader : MonoBehaviour
 
             foreach (Type _type in myTableType.Values)
             {
-                Debug.Log("データタイプ:"+_type.type + "　中身:" + _type.typeContentsList);
+                Debug.Log("データタイプ:" + _type.type + "　中身:" + _type.typeContentsList);
             }
 
             Debug.Log("MyTableCnt:" + MyTableCnt);
@@ -119,7 +121,7 @@ public class JsonReader : MonoBehaviour
         int cnt = 0;
         List<string> strList = new List<string>();
 
-        string test ="";
+        test = "";
 
         //テキスト全体をstring型で入れる変数を用意して入れる
         string TextLines = ServerConnect.SendMsg;
@@ -138,7 +140,7 @@ public class JsonReader : MonoBehaviour
 
             if (TextLines[i] == a)
             {
-                if (charFlg == false) 
+                if (charFlg == false)
                 {
                     test = "";
                     charFlg = true;
@@ -150,29 +152,29 @@ public class JsonReader : MonoBehaviour
                     {
                         if (TextLines[i] == '\"' && TextLines[i + 1] == ':' && TextLines[i + 2] == ' ' ||
                             TextLines[i] == '\"' && TextLines[i + 1] == ',' ||
-                            TextLines[i] == '\"' && TextLines[i + 1] == '\n') 
+                            TextLines[i] == '\"' && TextLines[i + 1] == '\n')
                         {
                             strList.Add(test);
-                            //Debug.Log("trueからfalseに入った文:" + test);
+                            // Debug.Log("trueからfalseに入った文:" + test);
                             test = "";
                             charFlg = false;
                         }
                     }
                 }
-               // Debug.Log(i + "で見つけた"+ charFlg+"になりました");
+                // Debug.Log(i + "で見つけた"+ charFlg+"になりました");
             }
 
-            if (charFlg == false && TextLines[i] == a && cnt==0)
+            if (charFlg == false && TextLines[i] == a && cnt == 0)
             {
                 test += "";
                 //Debug.Log("a"+ TextLines[i-2]+ TextLines[i-1]+ TextLines[i]);
             }
             if (charFlg == false && TextLines[i] == b)
             {
-                if(test!="\"")
+                if (test != "\"")
                 {
                     strList.Add(test);
-                    //Debug.Log(i + "で,を見つけた。入った文:" + test);
+                    //  Debug.Log(i + "で,を見つけた。入った文:" + test);
                     cnt = 0;
                 }
                 test = "";
@@ -180,13 +182,13 @@ public class JsonReader : MonoBehaviour
             else
             if (charFlg == false && TextLines[i] == c)
             {
-               // Debug.Log(i + "で見つけた");
+                // Debug.Log(i + "で見つけた");
                 test += "";
             }
             else
             if (charFlg == false && TextLines[i] == d)
             {
-               // Debug.Log(i + "で見つけた");
+                // Debug.Log(i + "で見つけた");
                 test += "";
             }
             else
@@ -198,12 +200,12 @@ public class JsonReader : MonoBehaviour
             else
             {
                 test += TextLines[i];
-               // Debug.Log(i + "入ったやつ：" + test);
+                // Debug.Log(i + "入ったやつ：" + test);
             }
 
             if (charFlg == true && TextLines[i] == b)
             {
-               // Debug.Log(i + "で見つけたけどだめなやつ"+TextLines[i-1]+ TextLines[i]+ TextLines[i+1]);
+                // Debug.Log(i + "で見つけたけどだめなやつ"+TextLines[i-1]+ TextLines[i]+ TextLines[i+1]);
             }
             else
             if (charFlg == true && TextLines[i] == c)
@@ -213,21 +215,21 @@ public class JsonReader : MonoBehaviour
             else
             if (charFlg == true && TextLines[i] == d)
             {
-              //  Debug.Log(i + "で見つけたけどだめなやつ" + TextLines[i - 1] + TextLines[i] + TextLines[i + 1]);
+                //  Debug.Log(i + "で見つけたけどだめなやつ" + TextLines[i - 1] + TextLines[i] + TextLines[i + 1]);
             }
             else
             if (charFlg == true && TextLines[i] == e)
             {
-              //  Debug.Log(i + "で見つけたけどだめなやつ" + TextLines[i - 1] + TextLines[i] + TextLines[i + 1]);
+                //  Debug.Log(i + "で見つけたけどだめなやつ" + TextLines[i - 1] + TextLines[i] + TextLines[i + 1]);
             }
         }
 
+        strList.Add(test);
 
-
-        for (int i=0; i< strList.Count();i++)
+        for (int i = 0; i < strList.Count(); i++)
         {
             //削除する文字の配列
-            char[] removeChars = new char[] { ' ', '\n' };
+            char[] removeChars = new char[] { ' ', '\n', '\r' };
 
             //削除する文字を1文字ずつ削除する
             foreach (char c in removeChars)
@@ -238,21 +240,21 @@ public class JsonReader : MonoBehaviour
             string str2 = "";
             str1 = strList[i];
 
-            for (int j = 1; j < str1.Length; j ++)
+            for (int j = 1; j < str1.Length; j++)
             {
                 str2 += str1[j];
 
                 strList[i] = str2;
             }
 
-            //Debug.Log("strList"+i+":" + strList[i]);
+            //Debug.Log("strList" + i + ":" + strList[i] + "文字数：" + strList[i].Length);
         }
 
         //配列リサイズ
-        Array.Resize(ref inputJson.nameList, strList.Count/ 2);
+        Array.Resize(ref inputJson.nameList, strList.Count / 2);
         Array.Resize(ref inputJson.contentsList, strList.Count / 2);
 
-        for (int i = 0; i < strList.Count-1; i += 2)
+        for (int i = 0; i < strList.Count - 1; i += 2)
         {
             int j = i / 2;
 
@@ -263,6 +265,8 @@ public class JsonReader : MonoBehaviour
             nameList.Add(inputJson.nameList[j]);
             contentsList.Add(inputJson.contentsList[j]);
 
+            //     Debug.Log("番号:" + i + "キー名：" + inputJson.nameList[j] + "文字数" + inputJson.nameList[j].Length);
+            //    Debug.Log("番号:" + i + "内容　：" +inputJson.contentsList[j]+"文字数"+ inputJson.contentsList[j].Length);
             //テーブルを追加していく
             myTable.Add(inputJson.nameList[j], inputJson.contentsList[j]);
 
@@ -274,7 +278,7 @@ public class JsonReader : MonoBehaviour
             //中身を見て型処理
             type.type = TypeJudgment(type.typeContentsList);
 
-           // Debug.Log(type.typeContentsList + "の中身(型)：" + TypeJudgment(type.typeContentsList));
+            //Debug.Log(i+type.typeContentsList + "の中身(型)：" + TypeJudgment(type.typeContentsList));
 
             //テーブルを追加していく
             myTableType.Add(inputJson.nameList[j], type);
@@ -478,7 +482,7 @@ public class JsonReader : MonoBehaviour
             {
                 case eType.Int:
                     scr_Slider_int sliderInt = configObject.GetComponent<scr_Slider_int>();
-                    if(sliderInt.TextValue != null)
+                    if (sliderInt.TextValue != null)
                     {
                         inputJson.contentsList[i] = sliderInt.TextValue;
                     }
@@ -511,7 +515,7 @@ public class JsonReader : MonoBehaviour
                 default:
                     break;
             }
-        }        
+        }
     }
 
     public void ResetData()
