@@ -20,7 +20,7 @@ public class Quit : MonoBehaviour
     {
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #elif UNITY_STANDALONE
+        #else
         UnityEngine.Application.Quit();
         #endif
     }
