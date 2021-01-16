@@ -516,12 +516,46 @@ public class JsonReader : MonoBehaviour
 
     public void ResetData()
     {
-        myTable = new Dictionary<string, string>();
-        myTableType = new Dictionary<string, Type>();
-
-        nameList = new List<string>();
-        contentsList = new List<string>();
-        myTableCnt = 0;
-        Load();
+        for (int i = 0; i < myTableCnt; i++)
+        {
+            GameObject configObject = GameObject.Find(inputJson.nameList[i]);
+            switch (myTableType[inputJson.nameList[i]].type)
+            {
+                case eType.Int:
+                    scr_Slider_int sliderInt = configObject.GetComponent<scr_Slider_int>();
+                    if (sliderInt.TextValue != null)
+                    {
+                        sliderInt.TextValue = copyContentsList[i];
+                    }
+                    //Debug.Log(inputJson.contentsList[i]);
+                    break;
+                case eType.Double:
+                    scr_Slider slider = configObject.GetComponent<scr_Slider>();
+                    if (slider.TextValue != null)
+                    {
+                        slider.TextValue = copyContentsList[i];
+                    }
+                    //Debug.Log(inputJson.contentsList[i]);
+                    break;
+                case eType.String:
+                    scr_Input input = configObject.GetComponent<scr_Input>();
+                    if (input.TextValue != null)
+                    {
+                        input.TextValue = copyContentsList[i];
+                    }
+                    //Debug.Log(inputJson.contentsList[i]);
+                    break;
+                case eType.Bool:
+                    scr_DropDown dropDown = configObject.GetComponent<scr_DropDown>();
+                    if (dropDown.TextValue != null)
+                    {
+                        dropDown.TextValue = copyContentsList[i];
+                    }
+                    //Debug.Log(inputJson.contentsList[i]);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
