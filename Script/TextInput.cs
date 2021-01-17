@@ -13,7 +13,7 @@ public class TextInput : MonoBehaviour
     private static string input;//入力されたinPutを読み込む
 
     public InputField inputField;
-    string str;
+
     //ゲッター
     public static string Get_Input
     {
@@ -34,29 +34,21 @@ public class TextInput : MonoBehaviour
                 string str = "";
                 //ここの処理は数字と.のみ入力を受け付けたいのでその処理がされてます
                 //文字を見つける処理
-                var character = "!#$%&'()=~|`{+*}<>?-^@[;:],/\\QWERTYUIOPASDFGHJKLZXCVBNM_qwertyuiopasdfghjklzxcvbnm";
+                var character = "1234567890.";
 
-                //characterの長さを取得してその分for文で回す
-                for (int i = 0; i < character.Length; i++)
-                {
-                    //Containsは指定したのを探索、結果をtrue,falseで返してくれる
-                    //ToStringは変数をstringに変換してくれる
-                    //Replaceは第一引数を第二引数に変換する機能
-                    if (inputField.text.Contains(character[i].ToString()) == true)
-                    {
-                        inputField.text = inputField.text.Replace(character[i].ToString(), "");
-                    }
-                }
-
+                //inputFieldの長さを取得してその分for文で回す
                 for (int i = 0; i < inputField.text.Length; i++)
                 {
-                    //Debug.Log(inputField.text[i]+ "：" + Encoding.GetEncoding("Shift_JIS").GetByteCount(inputField.text[i].ToString()));
-                    if (Encoding.GetEncoding("Shift_JIS").GetByteCount(inputField.text[i].ToString()) != 2)
+                    //characterの長さを取得してその分for文で回す
+                    for (int j = 0; j < character.Length; j++)
                     {
-                        str += inputField.text[i];
+                        if (inputField.text[i] == character[j])
+                        {
+                            str += inputField.text[i];
+                        }
                     }
                 }
-
+                //精査したやつを入れなおす
                 inputField.text = str;
             }
         }
@@ -64,11 +56,11 @@ public class TextInput : MonoBehaviour
         {
             inputField.GetComponent<Image>().color = Color.white;
         }
+
         if (UnityEngine.Input.GetKeyDown(KeyCode.Return) && inputField.text != "")
         {
             EndInput();
         }
-
     }
 
     public void EndInput()//入力終了
