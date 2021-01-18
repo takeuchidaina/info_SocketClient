@@ -36,7 +36,7 @@ public class UICreate : MonoBehaviour
 
     /*座標*/
     Vector2 view = new Vector2(0.0f, 300.0f);                   //スクロールビューの座標
-    Vector2 textPos = new Vector2(0.0f, -70.0f);              //項目名
+    Vector2 textPos = new Vector2(40.0f, -70.0f);              //項目名
     Vector2 basisPos = new Vector2(0.0f, -140.0f);              //ベース
     Vector2 sliderPos = new Vector2(-110.0f, -140.0f);         //スライダー
     Vector2 slidertextPos = new Vector2(380.0f, -140.0f);       //スライダーのinput
