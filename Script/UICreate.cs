@@ -36,11 +36,11 @@ public class UICreate : MonoBehaviour
 
     /*座標*/
     Vector2 view = new Vector2(0.0f, 300.0f);                   //スクロールビューの座標
-    Vector2 textPos = new Vector2(0.0f,-70.0f);              //項目名
+    Vector2 textPos = new Vector2(0.0f, -70.0f);              //項目名
     Vector2 basisPos = new Vector2(0.0f, -140.0f);              //ベース
-    Vector2 sliderPos =  new Vector2(-110.0f, -140.0f);         //スライダー
-    Vector2 slidertextPos =  new Vector2(380.0f,-140.0f);       //スライダーのinput
-    Vector2 dropS_Pos =  new Vector2(260.0f, -140.0f);          //ドロップダウン(short)
+    Vector2 sliderPos = new Vector2(-110.0f, -140.0f);         //スライダー
+    Vector2 slidertextPos = new Vector2(380.0f, -140.0f);       //スライダーのinput
+    Vector2 dropS_Pos = new Vector2(260.0f, -140.0f);          //ドロップダウン(short)
     Vector2 space = new Vector2(0.0f, 230.0f);                  //間隔
 
     #endregion
@@ -99,8 +99,8 @@ public class UICreate : MonoBehaviour
         var viewPort = scroll.transform.Find("Viewport");
         Transform Content = viewPort.transform.Find("Content");
         var delta = Content.GetComponent<RectTransform>();
-        delta.sizeDelta = Vector2.up + new Vector2(0.0f,260.0f) * jsonReader.MyTableCnt;//項目数に応じた大きさ
-        var half = (new Vector2(0.0f, 260.0f) * jsonReader.MyTableCnt) /2;              //UIのy = 0の位置がこの値
+        delta.sizeDelta = Vector2.up + new Vector2(0.0f, 260.0f) * jsonReader.MyTableCnt;//項目数に応じた大きさ
+        var half = (new Vector2(0.0f, 260.0f) * jsonReader.MyTableCnt) / 2;              //UIのy = 0の位置がこの値
         textPos += half;
         basisPos += half;
         sliderPos += half;
@@ -207,6 +207,43 @@ public class UICreate : MonoBehaviour
             }
             #endregion
         }
+    }
+    public void ReSetting()
+    {
+        #region 再設定
+        JsonReader jsonReader = GameObject.Find("LoadObject").GetComponent<JsonReader>();
+        for (int i = 0; i < jsonReader.MyTableCnt; i++)//生成する数だけ繰り返す
+        {
+            switch (TypeArray[i].type)
+            {
+                case eType.Int:
+                    //値の設定
+                    sliders[i] = instances[i].GetComponent<Slider>();
+                    sliders[i].value = int.Parse(ContentsArray[i]);
+                    inputs[i] = sliderinput[i].GetComponent<InputField>();
+                    inputs[i].text = ContentsArray[i];
+                    break;
+                case eType.Double:
+                    //値の設定
+                    sliders[i] = instances[i].GetComponent<Slider>();
+                    sliders[i].value = float.Parse(ContentsArray[i]);
+                    inputs[i] = sliderinput[i].GetComponent<InputField>();
+                    inputs[i].text = ContentsArray[i];
+                    break;
+                case eType.String:
+                    //値の設定
+                    inputs[i] = instances[i].GetComponent<InputField>();
+                    inputs[i].text = ContentsArray[i];
+                    break;
+                case eType.Bool:
+                    //初期の値の設定
+                    if (ContentsArray[i] == "true") dropDown[i].value = 1;
+                    else if (ContentsArray[i] == "false") dropDown[i].value = 0;
+                    else dropDown[i].value = 1;
+                    break;
+            }
+        }
+        #endregion
     }
 
     #region テスト用
