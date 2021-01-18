@@ -17,7 +17,7 @@ public class scr_Input_int : MonoBehaviour
     {
         //ゲッターセッター
         get { return this.inputValue; }
-        set { inputValue = value; }
+        set { inputValue = value;}
     }
 
     // Start is called before the first frame update
@@ -53,11 +53,8 @@ public class scr_Input_int : MonoBehaviour
         //inputField_S.ActivateInputField();
         // フォーカス
     }
-    public void OnValueChanged()
-    {
-        ValCheck();
-    }
-    void ValCheck()
+
+    public void ValCheck()
     {
         inputValue = inputField.text;     
         value = int.Parse(inputValue);      //範囲外か確認するため一度intに変換
