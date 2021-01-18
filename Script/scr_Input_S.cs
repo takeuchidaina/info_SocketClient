@@ -55,11 +55,8 @@ public class scr_Input_S : MonoBehaviour
         //inputField_S.ActivateInputField();
         // フォーカス
     }
-    public void OnValueChanged()
-    {
-        ValCheck();
-    }
-    void ValCheck()
+
+    public void ValCheck()
     {
         inputValue = inputField.text;
 
