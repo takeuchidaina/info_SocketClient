@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,9 +12,16 @@ public class ServerConnect : MonoBehaviour
 
     static string sendMsg = "";
 
+    static bool flg = true;
+
     public static string SendMsg
     {
         get { return sendMsg; }
+    }
+
+    public static bool Flg
+    {
+        get { return flg; }
     }
 
     [SerializeField]
@@ -35,7 +43,7 @@ public class ServerConnect : MonoBehaviour
     public int SendServer(string _sendMsg)
     {
         int port = 2001;
-
+        flg = true;
         do
         {
             //Debug.Log("通信開始　内容："+_sendMsg);
@@ -44,11 +52,25 @@ public class ServerConnect : MonoBehaviour
                 //Debug.Log("送信失敗");
                 return -1;
             }
-            System.Net.Sockets.TcpClient tcp =
-               new System.Net.Sockets.TcpClient(ipOrHost, port);    //tcpクライアント作成し接続
-            System.Net.Sockets.NetworkStream ns = tcp.GetStream();  //ネットワークストリーム取得
-            ns.ReadTimeout = 10000;
-            ns.WriteTimeout = 10000;    //タイムアウトの秒数
+
+            System.Net.Sockets.TcpClient tcp;    //tcpクライアント作成し接続
+            System.Net.Sockets.NetworkStream ns;  //ネットワークストリーム取得
+
+            try
+            {
+                tcp =　new System.Net.Sockets.TcpClient(ipOrHost, port);    //tcpクライアント作成し接続
+                ns = tcp.GetStream();  //ネットワークストリーム取得
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                //ログに入力内容を表示する
+                GameObject.Find("Text_Log").GetComponent<Log>().AddLog("通信が成功しませんでした");
+                flg = false;
+                return 0;
+            }
+
+            ns.ReadTimeout = 100;
+            ns.WriteTimeout = 100;    //タイムアウトの秒数
 
             //接続したあとの送信系
             System.Text.Encoding enc = System.Text.Encoding.UTF8;   //文字コード設定
@@ -83,6 +105,7 @@ public class ServerConnect : MonoBehaviour
                 //ログに入力内容を表示する
                 GameObject.Find("Text_Log").GetComponent<Log>().AddLog("受信：" + resMsg);
             }
+
             ns.Close();
             tcp.Close();    //閉じる
             return 0;
