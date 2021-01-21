@@ -29,6 +29,12 @@ public class EditControl : MonoBehaviour
 
     public void EditButton()
     {
+        //新規サーバーの名前が存在する場合の処理
+        if (ServerList.Instance.CheckHitName(serverName.text))
+        {
+            ErrorProc("既存のサーバー名が存在するため\n保存できませんでした");
+            return;
+        }
 
         //サーバー名またはIPが入力されていない場合の処理
         if (serverName.text == "" || serverIP.text == "")
