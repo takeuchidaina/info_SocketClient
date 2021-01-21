@@ -60,6 +60,8 @@ public class ServerConnect : MonoBehaviour
             {
                 tcp =　new System.Net.Sockets.TcpClient(ipOrHost, port);    //tcpクライアント作成し接続
                 ns = tcp.GetStream();  //ネットワークストリーム取得
+                ns.ReadTimeout = 3000;
+                ns.WriteTimeout = 3000;    //タイムアウトの秒数
             }
             catch (System.Net.Sockets.SocketException)
             {
@@ -68,9 +70,6 @@ public class ServerConnect : MonoBehaviour
                 flg = false;
                 return 0;
             }
-
-            ns.ReadTimeout = 100;
-            ns.WriteTimeout = 100;    //タイムアウトの秒数
 
             //接続したあとの送信系
             System.Text.Encoding enc = System.Text.Encoding.UTF8;   //文字コード設定
