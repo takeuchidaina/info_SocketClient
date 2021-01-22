@@ -59,7 +59,10 @@ public class LoadScene : MonoBehaviour
     //設定変更シーンに移動
     public void SettingsChange()
     {
-        SceneManager.LoadScene("SettingsChangeScene");
+        if(ServerConnect.Flg == true && SceneManager.GetActiveScene().name == "ManipulateScene")
+        {
+            SceneManager.LoadScene("SettingsChangeScene");
+        }
     }
 
 }
