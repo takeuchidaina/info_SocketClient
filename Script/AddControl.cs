@@ -36,6 +36,13 @@ public class AddControl : MonoBehaviour
             return;
         }
 
+        //新規サーバーのIPが存在する場合の処理
+        if (ServerList.Instance.CheckHitIP(serverIP.text))
+        {
+            ErrorProc("既存のIPが登録されているサーバーが存在するため\n生成出来ませんでした");
+            return;
+        }
+
         //サーバー数が最大の場合の処理
         if (ServerList.Instance.CheckMaxServerNum())
         {

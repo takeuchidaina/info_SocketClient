@@ -183,12 +183,28 @@ public class ServerList : MonoBehaviour
     //名前が一致するサーバーが存在するかの判定処理
     public bool CheckHitName(string _name)
     {
+        foreach (var serverRoom in serverRoomList)
+        {
+            //一致するサーバーがあった場合
+            if (serverRoom.ServerRoomName == _name)
+            {
+                return true;
+            }
+        }
+
+        //一致するサーバーがなかった場合
+        return false;
+    }
+
+    //IPが一致するサーバーが存在するかの判定処理
+    public bool CheckHitIP(string _ip)
+    {
         foreach(var serverRoom in serverRoomList)
         {
             //一致するサーバーがあった場合
-            if(serverRoom.ServerRoomName == _name)
+            if(serverRoom.ServerRoomIP == _ip)
             {
-                return true;
+                return false;
             }
         }
 
